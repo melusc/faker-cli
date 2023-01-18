@@ -6,12 +6,15 @@
 	"devDependencies": {
 		"@lusc/tsconfig": "^2.0.0",
 		"@types/node": "^18.11.18",
+		"prettier": "^2.8.3",
 		"rimraf": "^4.1.1",
-		"typescript": "^4.9.4"
+		"typescript": "^4.9.4",
+		"xo": "^0.53.1"
 	},
 	"scripts": {
 		"build": "yarn clean && tsc",
 		"clean": "rimraf dist",
-		"start": "node dist/index"
+		"start": "node dist/index",
+		"fmt": "prettier --cache -w . && xo --fix"
 	}
 }
