@@ -1,0 +1,17 @@
+{
+	"name": "faker-cli",
+	"private": true,
+	"type": "module",
+	"packageManager": "yarn@3.3.1",
+	"devDependencies": {
+		"@lusc/tsconfig": "^2.0.0",
+		"@types/node": "^18.11.18",
+		"rimraf": "^4.1.1",
+		"typescript": "^4.9.4"
+	},
+	"scripts": {
+		"build": "yarn clean && tsc",
+		"clean": "rimraf dist",
+		"start": "node dist/index"
+	}
+}
