@@ -4,15 +4,15 @@ import {program, type Command} from 'commander';
 import type {UnionToIntersection} from 'type-fest';
 
 type BaseTemplate = {
-	required?: boolean | undefined;
-	description?: string | undefined;
+	readonly required?: boolean | undefined;
+	readonly description?: string | undefined;
 };
 type BooleanTemplate = {
-	key: string;
+	readonly key: string;
 } & BaseTemplate;
 type OtherTemplate<T> = {
-	transform: (s: string | undefined) => T | undefined;
-	key: string;
+	readonly transform: (s: string | undefined) => T | undefined;
+	readonly key: string;
 } & BaseTemplate;
 type SingleTemplate<T> = IsBoolean<T> extends true
 	? BooleanTemplate
@@ -24,11 +24,13 @@ type ExtractKeys<T> = T extends TemplateFromArgs<infer R>
 	? SingleTemplate<T>
 	: T extends Record<string, infer R>
 	? ExtractKeys<R>
-	: T extends Array<infer R>
+	: T extends ReadonlyArray<infer R>
 	? ExtractKeys<R>
 	: never;
 
-type ExtractKeysArgs<Args extends any[]> = ExtractKeys<TemplateFromArgs<Args>>;
+type ExtractKeysArgs<Args extends readonly any[]> = ExtractKeys<
+	TemplateFromArgs<Args>
+>;
 
 type IsBoolean<T> = T extends boolean ? true : false;
 type FilterUndefined<T> = T extends undefined ? never : T;
@@ -37,21 +39,21 @@ type IsUnion<T> = [T] extends [UnionToIntersection<T>]
 	: [T] extends [boolean]
 	? false
 	: true;
-type ArrayOrObject<T> = T[] | Record<string, T>;
+type ArrayOrObject<T> = readonly T[] | Record<string, T>;
 type RecursiveTemplate<T> = IsUnion<T> extends true
 	? SingleTemplate<T>
 	: T extends ArrayOrObject<any>
 	? {
-			[K in keyof T]?: RecursiveTemplate<FilterUndefined<T[K]>>;
+			readonly [K in keyof T]?: RecursiveTemplate<FilterUndefined<T[K]>>;
 	  }
 	: SingleTemplate<T>;
 
-type TemplateFromArgs<Args extends any[]> = {
-	[key in keyof Args]: RecursiveTemplate<FilterUndefined<Args[key]>>;
+type TemplateFromArgs<Args extends readonly any[]> = {
+	readonly [key in keyof Args]: RecursiveTemplate<FilterUndefined<Args[key]>>;
 };
 
-type Template = <Args extends any[], Return>(
-	name: string | string[],
+type Template = <Args extends readonly any[], Return>(
+	name: string | readonly string[],
 	template: TemplateFromArgs<Args>,
 	callback: (...args: Args) => Return,
 	transform?: {
@@ -78,7 +80,7 @@ function isSingleTemplate(
 	return false;
 }
 
-function * extractKeys<Args extends any[]>(
+function * extractKeys<Args extends readonly any[]>(
 	template: TemplateFromArgs<Args>,
 ): Iterable<ExtractKeysArgs<Args>> {
 	function * extractAny(
@@ -119,7 +121,7 @@ function camelcaseKey(key: string) {
 	return camelCase(match!.groups!['key']!);
 }
 
-function fill<Args extends any[]>(
+function fill<Args extends readonly any[]>(
 	template: TemplateFromArgs<Args>,
 	program: Command,
 ): Args {
@@ -158,12 +160,15 @@ function fill<Args extends any[]>(
 		return result;
 	}
 
-	return template.map(item => recursiveFill(item) as unknown) as Args;
+	return template.map(
+		item => recursiveFill(item) as unknown,
+	) as readonly unknown[] as Args;
 }
 
+const isReadonlyArray: (arg0: any) => arg0 is readonly any[] = Array.isArray;
 function commandFromName(
 	program: Command,
-	name: string | string[],
+	name: string | readonly string[],
 	usedNames: Set<string>,
 ): Command {
 	function validateName(name: string) {
@@ -182,15 +187,15 @@ function commandFromName(
 		usedNames.add(name);
 	}
 
-	if (Array.isArray(name)) {
-		const first = name.shift();
+	if (isReadonlyArray(name)) {
+		const first = name[0];
 		if (first === undefined) {
 			throw new Error('name should be a string or a non-empty array');
 		}
 
 		validateName(first);
 		const subProgram = program.command(first);
-		for (const name_ of name) {
+		for (const name_ of name.slice(1)) {
 			validateName(name_);
 			subProgram.alias(name_);
 		}
