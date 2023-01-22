@@ -54,7 +54,7 @@ type TemplateFromArgs<Args extends any[]> = {
 };
 
 type Template = <Args extends any[]>(
-	name: string,
+	name: string | string[],
 	template: TemplateFromArgs<Args>,
 	callback: (...args: Args) => any,
 	transform?: (...args: Args) => Args | undefined,
@@ -125,13 +125,15 @@ function fill<Args extends any[]>(
 ): Args {
 	function recursiveFill<R>(item: RecursiveTemplate<R>): Args[number] {
 		if (isSingleTemplate(item)) {
-			const value = program.getOptionValue(camelcaseKey(item.key)) as unknown;
+			const value = program.getOptionValue(camelcaseKey(item.key)) as
+				| string
+				| undefined;
 			if (value === undefined && item.required) {
 				throw new Error(`${item.key} was required.`);
 			}
 
 			if ('transform' in item) {
-				return item.transform(String(value)) as unknown;
+				return item.transform(value) as unknown;
 			}
 
 			return value;
@@ -159,11 +161,29 @@ function fill<Args extends any[]>(
 	return template.map(item => recursiveFill(item) as unknown) as Args;
 }
 
-export function createTemplate(name: string): Template {
-	const subProgram = program.command(name);
+function commandFromName(program: Command, name: string | string[]): Command {
+	if (Array.isArray(name)) {
+		const first = name.shift();
+		if (first === undefined) {
+			throw new Error('name should be a string or a non-empty array');
+		}
+
+		const subProgram = program.command(first);
+		for (const name_ of name) {
+			subProgram.alias(name_);
+		}
+
+		return subProgram;
+	}
+
+	return program.command(name);
+}
+
+export function createTemplate(name: string | string[]): Template {
+	const subProgram = commandFromName(program, name);
 
 	return ((name, template, callback, transform) => {
-		const subSubProgram = subProgram.command(name);
+		const subSubProgram = commandFromName(subProgram, name);
 		const keys = [...extractKeys(template)];
 		for (const {required, key, description} of keys) {
 			if (required) {

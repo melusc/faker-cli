@@ -7,7 +7,7 @@ const module = faker.name;
 const template = createTemplate('name');
 
 template(
-	'firstName',
+	['firstName', 'first'],
 	[
 		{
 			transform: transformSexType,
@@ -18,7 +18,7 @@ template(
 );
 
 template(
-	'fullName',
+	['fullName', 'full'],
 	[
 		{
 			firstName: {
@@ -49,7 +49,7 @@ template('jobTitle', [], module.jobTitle);
 template('jobType', [], module.jobType);
 
 template(
-	'lastName',
+	['lastName', 'last'],
 	[
 		{
 			transform: transformSexType,
@@ -60,7 +60,7 @@ template(
 );
 
 template(
-	'middleName',
+	['middleName', 'middle'],
 	[
 		{
 			transform: transformSexType,
