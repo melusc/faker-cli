@@ -13,6 +13,7 @@ import './commands/datatype.js';
 import './commands/date.js';
 import './commands/finance.js';
 import './commands/git.js';
+import './commands/hacker.js';
 import './commands/name.js';
 
 program
