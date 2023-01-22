@@ -53,11 +53,14 @@ type TemplateFromArgs<Args extends any[]> = {
 	[key in keyof Args]: RecursiveTemplate<FilterUndefined<Args[key]>>;
 };
 
-type Template = <Args extends any[]>(
+type Template = <Args extends any[], Return>(
 	name: string | string[],
 	template: TemplateFromArgs<Args>,
-	callback: (...args: Args) => any,
-	transform?: (...args: Args) => Args | undefined,
+	callback: (...args: Args) => Return,
+	transform?: {
+		pre?: (...args: Args) => Args | undefined;
+		post?: (value: Return) => unknown;
+	},
 ) => void;
 
 function isSingleTemplate(
@@ -216,9 +219,11 @@ export function createTemplate(name: string | string[]): Template {
 
 			let args = fill(template, subSubProgram);
 
-			args = transform?.(...args) ?? args;
+			args = transform?.pre?.(...args) ?? args;
 
-			console.log(callback(...args));
+			const result = callback(...args);
+			const final = transform?.post?.(result) ?? result;
+			console.log(final);
 		});
 	}) satisfies Template;
 }

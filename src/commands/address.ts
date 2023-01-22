@@ -117,22 +117,27 @@ template(
 		},
 	],
 	module.nearbyGPSCoordinate,
-	(...args) => {
-		const [coordinates] = args;
-		if (coordinates === undefined || coordinates.every(t => t === undefined)) {
-			args[0] = undefined;
+	{
+		pre(...args) {
+			const [coordinates] = args;
+			if (
+				coordinates === undefined
+				|| coordinates.every(t => t === undefined)
+			) {
+				args[0] = undefined;
+				return args;
+			}
+
+			if (coordinates?.includes(undefined as any)) {
+				throw new Error(
+					`Expected coordinates to either all be undefined or a number, got [${coordinates
+						.map(t => t ?? 'undefined')
+						.join(', ')}].`,
+				);
+			}
+
 			return args;
-		}
-
-		if (coordinates?.includes(undefined as any)) {
-			throw new Error(
-				`Expected coordinates to either all be undefined or a number, got [${coordinates
-					.map(t => t ?? 'undefined')
-					.join(', ')}].`,
-			);
-		}
-
-		return args;
+		},
 	},
 );
 
