@@ -4,6 +4,7 @@ import {exit} from 'node:process';
 import {program} from 'commander';
 
 import './commands/address.js';
+import './commands/animal.js';
 import './commands/name.js';
 
 program
