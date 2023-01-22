@@ -1,7 +1,7 @@
 import {faker} from '@faker-js/faker';
 
 import {createTemplate} from '../command-template.js';
-import {transformNumber, transformString} from '../util.js';
+import {stringOf, transformNumber, transformString} from '../util.js';
 
 const module = faker.address;
 const template = createTemplate('address');
@@ -29,17 +29,7 @@ template(
 	[
 		{
 			key: '--alpha-code <code>',
-			transform(s: string | undefined) {
-				if (s === undefined) {
-					return undefined;
-				}
-
-				if (/^alpha-[23]$/.test(s)) {
-					return s as 'alpha-2' | 'alpha-3';
-				}
-
-				throw new Error(`Expected "alpha-2" or "alpha-3", got "${s}".`);
-			},
+			transform: stringOf(new Set(['alpha-2', 'alpha-3'] as const)),
 		},
 	],
 	module.countryCode,

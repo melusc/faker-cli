@@ -49,3 +49,19 @@ export function transformNumber(s: string | undefined): number | undefined {
 export function transformString(s: string | undefined): string | undefined {
 	return s;
 }
+
+export function stringOf<T extends string>(
+	set: Set<T>,
+): (s: string | undefined) => T | undefined {
+	return (s: string | undefined) => {
+		if (s === undefined) {
+			return undefined;
+		}
+
+		if (set.has(s as T)) {
+			return s as T;
+		}
+
+		throw new Error(`Expected "${s}" to be one of ${JSON.stringify([...set])}`);
+	};
+}
