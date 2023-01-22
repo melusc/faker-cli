@@ -161,29 +161,47 @@ function fill<Args extends any[]>(
 	return template.map(item => recursiveFill(item) as unknown) as Args;
 }
 
-function commandFromName(program: Command, name: string | string[]): Command {
+function commandFromName(
+	program: Command,
+	name: string | string[],
+	usedNames: Set<string>,
+): Command {
+	function throwIfDuplicate(name: string) {
+		if (usedNames.has(name)) {
+			throw new Error(`Duplicate command ${name}.`);
+		}
+
+		usedNames.add(name);
+	}
+
 	if (Array.isArray(name)) {
 		const first = name.shift();
 		if (first === undefined) {
 			throw new Error('name should be a string or a non-empty array');
 		}
 
+		throwIfDuplicate(first);
 		const subProgram = program.command(first);
 		for (const name_ of name) {
+			throwIfDuplicate(name_);
 			subProgram.alias(name_);
 		}
 
 		return subProgram;
 	}
 
+	throwIfDuplicate(name);
 	return program.command(name);
 }
 
+const rootCommands = new Set<string>();
 export function createTemplate(name: string | string[]): Template {
-	const subProgram = commandFromName(program, name);
+	const subProgram = commandFromName(program, name, rootCommands);
+
+	const scopeCommands = new Set<string>();
 
 	return ((name, template, callback, transform) => {
-		const subSubProgram = commandFromName(subProgram, name);
+		const subSubProgram = commandFromName(subProgram, name, scopeCommands);
 		const keys = [...extractKeys(template)];
 		for (const {required, key, description} of keys) {
 			if (required) {
