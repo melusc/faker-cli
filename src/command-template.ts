@@ -169,7 +169,15 @@ function commandFromName(
 	name: string | string[],
 	usedNames: Set<string>,
 ): Command {
-	function throwIfDuplicate(name: string) {
+	function validateName(name: string) {
+		if (name === '') {
+			throw new Error('Unexpected empty name');
+		}
+
+		if (!/^[a-zA-Z]+$/.test(name)) {
+			throw new Error(`"${name}" should only contain characters a-z.`);
+		}
+
 		if (usedNames.has(name)) {
 			throw new Error(`Duplicate command "${name}".`);
 		}
@@ -183,17 +191,17 @@ function commandFromName(
 			throw new Error('name should be a string or a non-empty array');
 		}
 
-		throwIfDuplicate(first);
+		validateName(first);
 		const subProgram = program.command(first);
 		for (const name_ of name) {
-			throwIfDuplicate(name_);
+			validateName(name_);
 			subProgram.alias(name_);
 		}
 
 		return subProgram;
 	}
 
-	throwIfDuplicate(name);
+	validateName(name);
 	return program.command(name);
 }
 
