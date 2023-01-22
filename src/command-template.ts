@@ -37,15 +37,12 @@ type IsUnion<T> = [T] extends [UnionToIntersection<T>]
 	: [T] extends [boolean]
 	? false
 	: true;
+type ArrayOrObject<T> = T[] | Record<string, T>;
 type RecursiveTemplate<T> = IsUnion<T> extends true
 	? SingleTemplate<T>
-	: T extends Record<string, any>
+	: T extends ArrayOrObject<any>
 	? {
 			[K in keyof T]?: RecursiveTemplate<FilterUndefined<T[K]>>;
-	  }
-	: T extends any[]
-	? {
-			[K in keyof T]: RecursiveTemplate<FilterUndefined<T[K]>>;
 	  }
 	: SingleTemplate<T>;
 
