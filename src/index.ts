@@ -10,6 +10,7 @@ import './commands/commerce.js';
 import './commands/company.js';
 import './commands/database.js';
 import './commands/datatype.js';
+import './commands/date.js';
 import './commands/name.js';
 
 program
