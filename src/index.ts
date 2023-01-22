@@ -3,6 +3,9 @@ import {exit} from 'node:process';
 
 import {program} from 'commander';
 
+import './commands/address.js';
+import './commands/name.js';
+
 program
 	.name('faker')
 	.allowExcessArguments(false)
