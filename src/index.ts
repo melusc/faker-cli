@@ -6,6 +6,7 @@ import {program} from 'commander';
 import './commands/address.js';
 import './commands/animal.js';
 import './commands/color.js';
+import './commands/commerce.js';
 import './commands/name.js';
 
 program

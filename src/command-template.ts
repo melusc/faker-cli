@@ -171,7 +171,7 @@ function commandFromName(
 ): Command {
 	function throwIfDuplicate(name: string) {
 		if (usedNames.has(name)) {
-			throw new Error(`Duplicate command ${name}.`);
+			throw new Error(`Duplicate command "${name}".`);
 		}
 
 		usedNames.add(name);
