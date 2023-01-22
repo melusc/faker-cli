@@ -83,3 +83,19 @@ export function stringOf<T extends string>(
 		throw new Error(`Expected "${s}" to be one of ${JSON.stringify([...set])}`);
 	};
 }
+
+export function matchRegex(
+	regex: RegExp,
+): (s: string | undefined) => string | undefined {
+	return s => {
+		if (s === undefined) {
+			return undefined;
+		}
+
+		if (!regex.test(s)) {
+			throw new Error(`Expected "${s}" to match ${String(regex)}`);
+		}
+
+		return s;
+	};
+}
