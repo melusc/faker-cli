@@ -1,0 +1,6 @@
+{
+	"rules": {
+		"@typescript-eslint/indent": "off",
+		"no-mixed-spaces-and-tabs": "off"
+	}
+}

@@ -203,6 +203,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@faker-js/faker@npm:^7.6.0":
+  version: 7.6.0
+  resolution: "@faker-js/faker@npm:7.6.0"
+  checksum: 942af6221774e8c98a0eb6bc75265e05fb81a941170377666c3439aab9495dd321d6beedc5406f07e6ad44262b3e43c20961f666d116ad150b78e7437dd1bb2b
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.11.8":
   version: 0.11.8
   resolution: "@humanwhocodes/config-array@npm:0.11.8"
@@ -662,7 +669,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"camelcase@npm:^7.0.0":
+"camelcase@npm:^7.0.0, camelcase@npm:^7.0.1":
   version: 7.0.1
   resolution: "camelcase@npm:7.0.1"
   checksum: 86ab8f3ebf08bcdbe605a211a242f00ed30d8bfb77dab4ebb744dd36efbc84432d1c4adb28975ba87a1b8be40a80fbd1e60e2f06565315918fa7350011a26d3d
@@ -1535,12 +1542,15 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "faker-cli@workspace:."
   dependencies:
+    "@faker-js/faker": ^7.6.0
     "@lusc/tsconfig": ^2.0.0
     "@types/node": ^18.11.18
+    camelcase: ^7.0.1
     commander: ^10.0.0
     esbuild: ^0.17.2
     prettier: ^2.8.3
     rimraf: ^4.1.1
+    type-fest: ^3.5.3
     typescript: ^4.9.4
     xo: ^0.53.1
   languageName: unknown
@@ -3588,6 +3598,13 @@ __metadata:
   version: 3.5.2
   resolution: "type-fest@npm:3.5.2"
   checksum: 39411ad25610fd5542b3bc1a3381bfc24a7cd3d422f52e5aa9a0580fd7c8a60140c332ef585637e05117f3e0b7267dbd510e15e13f3dd8ce98fd29fba9c3479f
+  languageName: node
+  linkType: hard
+
+"type-fest@npm:^3.5.3":
+  version: 3.5.3
+  resolution: "type-fest@npm:3.5.3"
+  checksum: ac52b1a1c695cbbc5e18edf9b15b27d9135611b4be7a50a41ac07bed9687f79a8cad759aa4e17ef74f2ef5a72c503012de6f1a960a132040798ebc588f574f5c
   languageName: node
   linkType: hard
 

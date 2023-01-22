@@ -9,11 +9,12 @@
 		"esbuild": "^0.17.2",
 		"prettier": "^2.8.3",
 		"rimraf": "^4.1.1",
+		"type-fest": "^3.5.3",
 		"typescript": "^4.9.4",
 		"xo": "^0.53.1"
 	},
 	"scripts": {
-		"build:esbuild": "esbuild --packages=external --outfile=dist/cli.js --format=esm src/index.ts",
+		"build:esbuild": "esbuild --packages=external --bundle --outfile=dist/cli.js --format=esm src/index.ts",
 		"build": "yarn clean && yarn typecheck && yarn build:esbuild",
 		"typecheck": "tsc",
 		"clean": "rimraf dist",
@@ -21,6 +22,8 @@
 		"fmt": "prettier --cache -w . && xo --fix"
 	},
 	"dependencies": {
+		"@faker-js/faker": "^7.6.0",
+		"camelcase": "^7.0.1",
 		"commander": "^10.0.0"
 	}
 }
