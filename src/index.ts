@@ -14,6 +14,7 @@ import './commands/date.js';
 import './commands/finance.js';
 import './commands/git.js';
 import './commands/hacker.js';
+import './commands/image.js';
 import './commands/name.js';
 
 program
