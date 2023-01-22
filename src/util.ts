@@ -46,6 +46,24 @@ export function transformNumber(s: string | undefined): number | undefined {
 	throw new Error(`Could not parse "${s}" to a finite number.`);
 }
 
+export function transformInteger(s: string | undefined): number | undefined {
+	if (s === undefined) {
+		return undefined;
+	}
+
+	const parsed = Number(s);
+
+	if (Number.isInteger(parsed)) {
+		return parsed;
+	}
+
+	if (Number.isFinite(parsed)) {
+		throw new TypeError(`"${s}" is not an integer.`);
+	}
+
+	throw new Error(`Could not parse "${s}" to a finite number.`);
+}
+
 export function transformString(s: string | undefined): string | undefined {
 	return s;
 }

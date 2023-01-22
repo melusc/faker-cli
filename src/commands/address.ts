@@ -1,7 +1,12 @@
 import {faker} from '@faker-js/faker';
 
 import {createTemplate} from '../command-template.js';
-import {stringOf, transformNumber, transformString} from '../util.js';
+import {
+	stringOf,
+	transformInteger,
+	transformNumber,
+	transformString,
+} from '../util.js';
 
 const module = faker.address;
 const template = createTemplate('address');
@@ -60,7 +65,7 @@ template(
 		},
 		{
 			key: '--precision <precision>',
-			transform: transformNumber,
+			transform: transformInteger,
 		},
 	],
 	module.latitude,
@@ -79,7 +84,7 @@ template(
 		},
 		{
 			key: '--precision <precision>',
-			transform: transformNumber,
+			transform: transformInteger,
 		},
 	],
 	module.longitude,
