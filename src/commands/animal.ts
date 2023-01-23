@@ -13,6 +13,8 @@ template('cat', [], module.cat);
 
 template('cetacean', [], module.cetacean);
 
+template('crocodilia', [], module.crocodilia);
+
 template('cow', [], module.cow);
 
 template('dog', [], module.dog);
