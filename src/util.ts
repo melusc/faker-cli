@@ -64,6 +64,26 @@ export function transformInteger(s: string | undefined): number | undefined {
 	throw new Error(`Could not parse "${s}" to a finite number.`);
 }
 
+/**
+ * @param low inclusive
+ * @param high inclusive
+ */
+export function integerBetween(low: number, high: number) {
+	return (s: string | undefined): number | undefined => {
+		const parsed = transformInteger(s);
+
+		if (parsed === undefined) {
+			return undefined;
+		}
+
+		if (low <= parsed && parsed <= high) {
+			return parsed;
+		}
+
+		throw new Error(`${parsed} was not between ${low} and ${high}`);
+	};
+}
+
 export function transformString(s: string | undefined): string | undefined {
 	return s;
 }

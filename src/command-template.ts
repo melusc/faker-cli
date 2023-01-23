@@ -42,6 +42,8 @@ type IsUnion<T> = [T] extends [UnionToIntersection<T>]
 type ArrayOrObject<T> = readonly T[] | Record<string, T>;
 type RecursiveTemplate<T> = IsUnion<T> extends true
 	? SingleTemplate<T>
+	: T extends RegExp
+	? SingleTemplate<T>
 	: T extends ArrayOrObject<any>
 	? {
 			readonly [K in keyof T]?: RecursiveTemplate<FilterUndefined<T[K]>>;
@@ -176,8 +178,8 @@ function commandFromName(
 			throw new Error('Unexpected empty name');
 		}
 
-		if (!/^[a-zA-Z]+$/.test(name)) {
-			throw new Error(`"${name}" should only contain characters a-z.`);
+		if (!/^[a-z\d]+$/i.test(name)) {
+			throw new Error(`"${name}" should only contain characters a-z and 0-9.`);
 		}
 
 		if (usedNames.has(name)) {
