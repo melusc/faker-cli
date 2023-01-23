@@ -24,10 +24,12 @@ template(
 		{
 			key: '--from <from>',
 			transform: transformDate,
+			required: true,
 		},
 		{
 			key: '--to <to>',
 			transform: transformDate,
+			required: true,
 		},
 	],
 	module.between,
@@ -39,10 +41,12 @@ template(
 		{
 			key: '--from <from>',
 			transform: transformDate,
+			required: true,
 		},
 		{
 			key: '--to <to>',
 			transform: transformDate,
+			required: true,
 		},
 		{
 			key: '--amount <amount>',

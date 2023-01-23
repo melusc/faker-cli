@@ -186,6 +186,7 @@ template(
 		{
 			key: '--state <state>',
 			transform: transformString,
+			required: true,
 		},
 	],
 	module.zipCodeByState,
