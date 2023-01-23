@@ -22,6 +22,7 @@ import './commands/music.js';
 import './commands/phone.js';
 import './commands/random.js';
 import './commands/science.js';
+import './commands/system.js';
 
 program
 	.name('faker')
