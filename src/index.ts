@@ -18,6 +18,7 @@ import './commands/image.js';
 import './commands/internet.js';
 import './commands/lorem.js';
 import './commands/music.js';
+import './commands/phone.js';
 import './commands/name.js';
 
 program
