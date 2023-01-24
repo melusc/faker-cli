@@ -214,11 +214,12 @@ function commandFromName(
 			subProgram.alias(name_);
 		}
 
+		subProgram.allowExcessArguments(false);
 		return subProgram;
 	}
 
 	validateName(name);
-	return program.command(name);
+	return program.command(name).allowExcessArguments(false);
 }
 
 const rootCommands = new Set<string>();
