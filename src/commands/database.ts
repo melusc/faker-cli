@@ -5,12 +5,12 @@ import {createTemplate} from '../command-template.js';
 const module = faker.database;
 const template = createTemplate('database');
 
-template('collation', [], module.collation);
+template('collation', [] as const, module.collation);
 
-template('column', [], module.column);
+template('column', [] as const, module.column);
 
-template('engine', [], module.engine);
+template('engine', [] as const, module.engine);
 
-template('mongodbObjectId', [], module.mongodbObjectId);
+template('mongodbObjectId', [] as const, module.mongodbObjectId);
 
-template('type', [], module.type);
+template('type', [] as const, module.type);

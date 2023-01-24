@@ -5,24 +5,24 @@ import {createTemplate} from '../command-template.js';
 const module = faker.company;
 const template = createTemplate('company');
 
-template('bs', [], module.bs);
+template('bs', [] as const, module.bs);
 
-template('bsAdjective', [], module.bsAdjective);
+template('bsAdjective', [] as const, module.bsAdjective);
 
-template('bsBuzz', [], module.bsBuzz);
+template('bsBuzz', [] as const, module.bsBuzz);
 
-template('bsNoun', [], module.bsNoun);
+template('bsNoun', [] as const, module.bsNoun);
 
-template('catchPhrase', [], module.catchPhrase);
+template('catchPhrase', [] as const, module.catchPhrase);
 
-template('catchPhraseAdjective', [], module.catchPhraseAdjective);
+template('catchPhraseAdjective', [] as const, module.catchPhraseAdjective);
 
-template('catchPhraseDescriptor', [], module.catchPhraseDescriptor);
+template('catchPhraseDescriptor', [] as const, module.catchPhraseDescriptor);
 
-template('catchPhraseNoun', [], module.catchPhraseNoun);
+template('catchPhraseNoun', [] as const, module.catchPhraseNoun);
 
-template('companySuffix', [], module.companySuffix);
+template('companySuffix', [] as const, module.companySuffix);
 
-template('name', [], module.name);
+template('name', [] as const, module.name);
 
-template('suffixes', [], module.suffixes);
+template('suffixes', [] as const, module.suffixes);

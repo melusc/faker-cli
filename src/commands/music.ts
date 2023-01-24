@@ -5,6 +5,6 @@ import {createTemplate} from '../command-template.js';
 const module = faker.music;
 const template = createTemplate('music');
 
-template('genre', [], module.genre);
+template('genre', [] as const, module.genre);
 
-template('songName', [], module.songName);
+template('songName', [] as const, module.songName);

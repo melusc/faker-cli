@@ -6,7 +6,7 @@ import {stringOf} from '../util.js';
 const module = faker.git;
 const template = createTemplate('git');
 
-template('branch', [], module.branch);
+template('branch', [] as const, module.branch);
 
 template(
 	'commitEntry',
@@ -20,12 +20,12 @@ template(
 				key: '--merge',
 			},
 		},
-	],
+	] as const,
 	module.commitEntry,
 );
 
-template('commitMessage', [], module.commitMessage);
+template('commitMessage', [] as const, module.commitMessage);
 
-template('commitSha', [], module.commitSha);
+template('commitSha', [] as const, module.commitSha);
 
-template('shortSha', [], module.shortSha);
+template('shortSha', [] as const, module.shortSha);

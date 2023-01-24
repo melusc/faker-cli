@@ -5,14 +5,14 @@ import {createTemplate} from '../command-template.js';
 const module = faker.hacker;
 const template = createTemplate('hacker');
 
-template('abbreviation', [], module.abbreviation);
+template('abbreviation', [] as const, module.abbreviation);
 
-template('adjective', [], module.adjective);
+template('adjective', [] as const, module.adjective);
 
-template('ingverb', [], module.ingverb);
+template('ingverb', [] as const, module.ingverb);
 
-template('noun', [], module.noun);
+template('noun', [] as const, module.noun);
 
-template('phrase', [], module.phrase);
+template('phrase', [] as const, module.phrase);
 
-template('verb', [], module.verb);
+template('verb', [] as const, module.verb);

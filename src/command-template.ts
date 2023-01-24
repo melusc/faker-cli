@@ -1,7 +1,6 @@
 import {faker} from '@faker-js/faker';
 import camelCase from 'camelcase';
 import {program, type Command} from 'commander';
-import type {UnionToIntersection} from 'type-fest';
 
 type BaseTemplate = {
 	readonly required?: boolean | undefined;
@@ -18,9 +17,7 @@ type SingleTemplate<T> = IsBoolean<T> extends true
 	? BooleanTemplate
 	: OtherTemplate<T>;
 
-type ExtractKeys<T> = T extends TemplateFromArgs<infer R>
-	? ExtractKeys<R>
-	: T extends SingleTemplate<infer T>
+type ExtractKeys<T> = T extends SingleTemplate<infer T>
 	? SingleTemplate<T>
 	: T extends Record<string, infer R>
 	? ExtractKeys<R>
@@ -28,38 +25,44 @@ type ExtractKeys<T> = T extends TemplateFromArgs<infer R>
 	? ExtractKeys<R>
 	: never;
 
-type ExtractKeysArgs<Args extends readonly any[]> = ExtractKeys<
-	TemplateFromArgs<Args>
->;
-
 type IsBoolean<T> = T extends boolean ? true : false;
-type FilterUndefined<T> = T extends undefined ? never : T;
-type IsUnion<T> = [T] extends [UnionToIntersection<T>]
-	? false
-	: [T] extends [boolean]
-	? false
-	: true;
-type ArrayOrObject<T> = readonly T[] | Record<string, T>;
-type RecursiveTemplate<T> = IsUnion<T> extends true
-	? SingleTemplate<T>
-	: T extends RegExp
-	? SingleTemplate<T>
-	: T extends ArrayOrObject<any>
-	? {
-			readonly [K in keyof T]?: RecursiveTemplate<FilterUndefined<T[K]>>;
-	  }
-	: SingleTemplate<T>;
 
-type TemplateFromArgs<Args extends readonly any[]> = {
-	readonly [key in keyof Args]: RecursiveTemplate<FilterUndefined<Args[key]>>;
+type Template =
+	| BooleanTemplate
+	| SingleTemplate<any>
+	| {
+			readonly [key: string]: Template;
+	  }
+	| readonly Template[];
+
+type IsArrayOrRecord<T> = T extends Record<string, any>
+	? true
+	: T extends any[]
+	? true
+	: false;
+type ToArgRecursive<T> = T extends OtherTemplate<infer T>
+	? T
+	: T extends BooleanTemplate
+	? boolean
+	: IsArrayOrRecord<T> extends true
+	? {
+			[K in keyof T]: ToArgRecursive<T[K]>;
+	  }
+	: never;
+
+type ToArguments<T extends readonly Template[]> = {
+	[key in keyof T]: ToArgRecursive<T[key]>;
 };
 
-type Template = <Args extends readonly any[], Return>(
+type TemplateFunction = <TemplateActual extends readonly Template[], Return>(
 	name: string | readonly string[],
-	template: TemplateFromArgs<Args>,
-	callback: (...args: Args) => Return,
+	template: TemplateActual,
+	// @ts-expect-error In reality it is not infinitely deep
+	callback: (...args: ToArguments<TemplateActual>) => Return,
 	transform?: {
-		pre?: (...args: Args) => Args | undefined;
+		pre?: (
+			...args: ToArguments<TemplateActual>
+		) => ToArguments<TemplateActual> | undefined;
 		post?: (value: Return) => unknown;
 	},
 ) => void;
@@ -82,18 +85,17 @@ function isSingleTemplate(
 	return false;
 }
 
-function * extractKeys<Args extends readonly any[]>(
-	template: TemplateFromArgs<Args>,
-): Iterable<ExtractKeysArgs<Args>> {
-	function * extractAny(
-		item: RecursiveTemplate<any>,
-	): Iterable<ExtractKeysArgs<Args>> {
+function * extractKeys<TemplateActual extends readonly Template[]>(
+	template: TemplateActual,
+): Iterable<ExtractKeys<TemplateActual>> {
+	function * extractAny<T extends Template>(item: T): Iterable<ExtractKeys<T>> {
 		if (isSingleTemplate(item)) {
 			validateKey(item);
-			yield item as ExtractKeysArgs<Args>;
+			yield item as any;
 		} else {
 			for (const value of Object.values(item)) {
 				if (value !== undefined) {
+					// @ts-expect-error It is not infinite
 					yield * extractAny(value);
 				}
 			}
@@ -101,6 +103,7 @@ function * extractKeys<Args extends readonly any[]>(
 	}
 
 	for (const item of template) {
+		// @ts-expect-error In reality it is not infinitely deep
 		yield * extractAny(item);
 	}
 }
@@ -123,35 +126,43 @@ function camelcaseKey(key: string) {
 	return camelCase(match!.groups!['key']!);
 }
 
-function fill<Args extends readonly any[]>(
-	template: TemplateFromArgs<Args>,
+function fill<TemplateActual extends readonly Template[]>(
+	template: TemplateActual,
 	program: Command,
-): Args {
-	function recursiveFill<R>(item: RecursiveTemplate<R>): Args[number] {
+): ToArguments<TemplateActual> {
+	function recursiveFill<R extends Template>(item: R): ToArgRecursive<R> {
 		if (isSingleTemplate(item)) {
 			const value = program.getOptionValue(camelcaseKey(item.key)) as
 				| string
-				| undefined;
+				| undefined
+				| boolean;
 			if (value === undefined && item.required) {
 				throw new Error(`${item.key} was required.`);
 			}
 
-			if ('transform' in item) {
-				return item.transform(value) as unknown;
+			if (typeof value === 'boolean') {
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+				return value as ToArgRecursive<R>;
 			}
 
-			return value;
+			if ('transform' in item) {
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+				return item.transform(value) as ToArgRecursive<R>;
+			}
+
+			throw new Error(
+				`Value was not boolean (${typeof value}) and got no transform function.`,
+			);
 		}
 
 		if (Array.isArray(item)) {
-			return item.map(item => recursiveFill(item) as unknown);
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+			return item.map(item => recursiveFill(item)) as ToArgRecursive<R>;
 		}
 
 		const result: Record<string, unknown> = {};
 
-		for (const [key, value] of Object.entries<
-			RecursiveTemplate<any> | undefined
-		>(item as any)) {
+		for (const [key, value] of Object.entries(item)) {
 			if (value === undefined) {
 				continue;
 			}
@@ -159,12 +170,13 @@ function fill<Args extends readonly any[]>(
 			result[key] = recursiveFill(value);
 		}
 
-		return result;
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+		return result as ToArgRecursive<R>;
 	}
 
 	return template.map(
 		item => recursiveFill(item) as unknown,
-	) as readonly unknown[] as Args;
+	) as ToArguments<TemplateActual>;
 }
 
 const isReadonlyArray: (arg0: any) => arg0 is readonly any[] = Array.isArray;
@@ -210,7 +222,7 @@ function commandFromName(
 }
 
 const rootCommands = new Set<string>();
-export function createTemplate(name: string | string[]): Template {
+export function createTemplate(name: string | string[]): TemplateFunction {
 	const subProgram = commandFromName(program, name, rootCommands);
 
 	const scopeCommands = new Set<string>();
@@ -237,5 +249,5 @@ export function createTemplate(name: string | string[]): Template {
 			const final = transform?.post?.(result) ?? result;
 			console.log(final);
 		});
-	}) satisfies Template;
+	}) satisfies TemplateFunction;
 }

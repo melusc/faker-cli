@@ -6,7 +6,7 @@ import {transformString} from '../util.js';
 const module = faker.phone;
 const template = createTemplate('phone');
 
-template('imei', [], module.imei);
+template('imei', [] as const, module.imei);
 
 template(
 	'number',
@@ -16,6 +16,6 @@ template(
 			transform: transformString,
 			description: '# are replaced with a random number',
 		},
-	],
+	] as const,
 	module.number,
 );

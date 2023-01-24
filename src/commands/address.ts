@@ -11,7 +11,7 @@ import {
 const module = faker.address;
 const template = createTemplate('address');
 
-template('buildingNumber', [], module.buildingNumber);
+template('buildingNumber', [] as const, module.buildingNumber);
 
 template(
 	'cardinalDirection',
@@ -19,15 +19,15 @@ template(
 		{
 			key: '--use-abbreviation',
 		},
-	],
+	] as const,
 	module.cardinalDirection,
 );
 
-template('city', [], module.city);
+template('city', [] as const, module.city);
 
-template('cityName', [], module.cityName);
+template('cityName', [] as const, module.cityName);
 
-template('country', [], module.country);
+template('country', [] as const, module.country);
 
 template(
 	'countryCode',
@@ -36,11 +36,11 @@ template(
 			key: '--alpha-code <code>',
 			transform: stringOf(new Set(['alpha-2', 'alpha-3'] as const)),
 		},
-	],
+	] as const,
 	module.countryCode,
 );
 
-template('county', [], module.county);
+template('county', [] as const, module.county);
 
 template(
 	'direction',
@@ -48,7 +48,7 @@ template(
 		{
 			key: '--use-abbreviation',
 		},
-	],
+	] as const,
 	module.direction,
 );
 
@@ -67,7 +67,7 @@ template(
 			key: '--precision <precision>',
 			transform: transformInteger,
 		},
-	],
+	] as const,
 	module.latitude,
 );
 
@@ -86,7 +86,7 @@ template(
 			key: '--precision <precision>',
 			transform: transformInteger,
 		},
-	],
+	] as const,
 	module.longitude,
 );
 
@@ -108,9 +108,9 @@ template(
 			transform: transformNumber,
 		},
 		{
-			key: '--is-metric',
+			key: '--metric',
 		},
-	],
+	] as const,
 	module.nearbyGPSCoordinate,
 	{
 		pre(...args) {
@@ -119,6 +119,8 @@ template(
 				coordinates === undefined
 				|| coordinates.every(t => t === undefined)
 			) {
+				// @ts-expect-error Typescript expects [number, number]
+				// but faker can also take undefined
 				args[0] = undefined;
 				return args;
 			}
@@ -142,17 +144,17 @@ template(
 		{
 			key: '--use-abbreviation',
 		},
-	],
+	] as const,
 	module.ordinalDirection,
 );
 
-template('secondaryAddress', [], module.secondaryAddress);
+template('secondaryAddress', [] as const, module.secondaryAddress);
 
-template('state', [], module.state);
+template('state', [] as const, module.state);
 
-template('stateAbbr', [], module.stateAbbr);
+template('stateAbbr', [] as const, module.stateAbbr);
 
-template('street', [], module.street);
+template('street', [] as const, module.street);
 
 template(
 	'streetAddress',
@@ -160,13 +162,13 @@ template(
 		{
 			key: '--use-full-address',
 		},
-	],
+	] as const,
 	module.streetAddress,
 );
 
-template('streetName', [], module.streetName);
+template('streetName', [] as const, module.streetName);
 
-template('timeZone', [], module.timeZone);
+template('timeZone', [] as const, module.timeZone);
 
 template(
 	'zipCode',
@@ -176,7 +178,7 @@ template(
 			transform: transformString,
 			description: '"#" is replaced with a number.',
 		},
-	],
+	] as const,
 	module.zipCode,
 );
 
@@ -188,6 +190,6 @@ template(
 			transform: transformString,
 			required: true,
 		},
-	],
+	] as const,
 	module.zipCodeByState,
 );

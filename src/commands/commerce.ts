@@ -6,7 +6,7 @@ import {transformInteger, transformNumber, transformString} from '../util.js';
 const module = faker.commerce;
 const template = createTemplate('commerce');
 
-template('department', [], module.department);
+template('department', [] as const, module.department);
 
 template(
 	'price',
@@ -27,16 +27,16 @@ template(
 			key: '--symbol <symbol>',
 			transform: transformString,
 		},
-	],
+	] as const,
 	module.price,
 );
 
-template('product', [], module.product);
+template('product', [] as const, module.product);
 
-template('productAdjective', [], module.productAdjective);
+template('productAdjective', [] as const, module.productAdjective);
 
-template('productDescription', [], module.productDescription);
+template('productDescription', [] as const, module.productDescription);
 
-template('productMaterial', [], module.productMaterial);
+template('productMaterial', [] as const, module.productMaterial);
 
-template('productName', [], module.productName);
+template('productName', [] as const, module.productName);

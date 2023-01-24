@@ -31,7 +31,7 @@ template(
 			transform: transformDate,
 			required: true,
 		},
-	],
+	] as const,
 	module.between,
 );
 
@@ -52,7 +52,7 @@ template(
 			key: '--amount <amount>',
 			transform: transformInteger,
 		},
-	],
+	] as const,
 	module.betweens,
 );
 
@@ -77,7 +77,7 @@ template(
 				transform: transformDate,
 			},
 		},
-	],
+	] as const,
 	module.birthdate,
 );
 
@@ -92,7 +92,7 @@ template(
 			key: '--ref-date <date>',
 			transform: transformDate,
 		},
-	],
+	] as const,
 	module.future,
 );
 
@@ -107,7 +107,7 @@ template(
 				key: '--context',
 			},
 		},
-	],
+	] as const,
 	module.month,
 );
 
@@ -122,7 +122,7 @@ template(
 			key: '--ref-date <date>',
 			transform: transformDate,
 		},
-	],
+	] as const,
 	module.past,
 );
 
@@ -137,7 +137,7 @@ template(
 			key: '--ref-date <date>',
 			transform: transformDate,
 		},
-	],
+	] as const,
 	module.recent,
 );
 
@@ -152,7 +152,7 @@ template(
 			key: '--ref-date <date>',
 			transform: transformDate,
 		},
-	],
+	] as const,
 	module.soon,
 );
 
@@ -167,6 +167,6 @@ template(
 				key: '--context',
 			},
 		},
-	],
+	] as const,
 	module.weekday,
 );

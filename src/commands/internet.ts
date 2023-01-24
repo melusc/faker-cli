@@ -11,7 +11,7 @@ import {
 const module = faker.internet;
 const template = createTemplate('internet');
 
-template('avatar', [], module.avatar);
+template('avatar', [] as const, module.avatar);
 
 template(
 	'color',
@@ -28,15 +28,15 @@ template(
 			key: '--blue <int>',
 			transform: integerBetween(0, 255),
 		},
-	],
+	] as const,
 	module.color,
 );
 
-template(['domainName', 'domain'], [], module.domainName);
+template(['domainName', 'domain'], [] as const, module.domainName);
 
-template(['domainSuffix', 'suffix'], [], module.domainSuffix);
+template(['domainSuffix', 'suffix'], [] as const, module.domainSuffix);
 
-template('domainWord', [], module.domainWord);
+template('domainWord', [] as const, module.domainWord);
 
 template(
 	'email',
@@ -58,11 +58,11 @@ template(
 				key: '--allow-special-characters',
 			},
 		},
-	],
+	] as const,
 	module.email,
 );
 
-template('emoji', [], module.emoji);
+template('emoji', [] as const, module.emoji);
 
 template(
 	'exampleEmail',
@@ -80,11 +80,11 @@ template(
 				key: '--allow-special-characters',
 			},
 		},
-	],
+	] as const,
 	module.exampleEmail,
 );
 
-template('httpMethod', [], module.httpMethod);
+template('httpMethod', [] as const, module.httpMethod);
 
 type HttpStatusCodeType =
 	| 'informational'
@@ -106,38 +106,42 @@ template(
 	'httpStatusCode',
 	[
 		{
-			key: '--types <types>',
-			transform: transformString,
-			description: 'Can be one of ' + [...validHttpStatusCodes].join(', '),
+			types: {
+				key: '--types <types>',
+				transform(s: string | undefined) {
+					if (s === undefined) {
+						return undefined;
+					}
+
+					const split = s
+						.split(',')
+						.map(s => s.trim())
+						.filter(Boolean);
+
+					const types: HttpStatusCodeType[] = [];
+
+					for (const item of split) {
+						if (validHttpStatusCodes.has(item as HttpStatusCodeType)) {
+							types.push(item as HttpStatusCodeType);
+						} else {
+							throw new Error(`Unknown type "${item}"`);
+						}
+					}
+
+					return types;
+				},
+				description: 'Can be one of ' + [...validHttpStatusCodes].join(', '),
+			},
 		},
-	],
-	(sTypes: string) => {
-		const split = sTypes
-			.split(',')
-			.map(s => s.trim())
-			.filter(Boolean);
-
-		const types: HttpStatusCodeType[] = [];
-
-		for (const item of split) {
-			if (validHttpStatusCodes.has(item as HttpStatusCodeType)) {
-				types.push(item as HttpStatusCodeType);
-			} else {
-				throw new Error(`Unknown type "${item}"`);
-			}
-		}
-
-		return module.httpStatusCode({
-			types,
-		});
-	},
+	] as const,
+	module.httpStatusCode,
 );
 
-template('ip', [], module.ip);
+template('ip', [] as const, module.ip);
 
-template('ipv4', [], module.ipv4);
+template('ipv4', [] as const, module.ipv4);
 
-template('ipv6', [], module.ipv6);
+template('ipv6', [] as const, module.ipv6);
 
 template(
 	'mac',
@@ -146,7 +150,7 @@ template(
 			key: '--sep <sep>',
 			transform: stringOf(new Set(['', ':', '-'] as const)),
 		},
-	],
+	] as const,
 	module.mac,
 );
 
@@ -178,17 +182,17 @@ template(
 			key: '--prefix <prefix>',
 			transform: transformString,
 		},
-	],
+	] as const,
 	module.password,
 );
 
-template('port', [], module.port);
+template('port', [] as const, module.port);
 
-template('protocol', [], module.protocol);
+template('protocol', [] as const, module.protocol);
 
-template('url', [], module.url);
+template('url', [] as const, module.url);
 
-template('userAgent', [], module.userAgent);
+template('userAgent', [] as const, module.userAgent);
 
 template(
 	'userName',
@@ -201,6 +205,6 @@ template(
 			key: '--last-name <name>',
 			transform: transformString,
 		},
-	],
+	] as const,
 	module.userName,
 );

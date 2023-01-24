@@ -6,7 +6,7 @@ import {stringOf, transformInteger, transformString} from '../util.js';
 const module = faker.system;
 const template = createTemplate('system');
 
-template('commonFileExt', [], module.commonFileExt);
+template('commonFileExt', [] as const, module.commonFileExt);
 
 template(
 	'commonFileName',
@@ -15,11 +15,11 @@ template(
 			key: '--ext <ext>',
 			transform: transformString,
 		},
-	],
+	] as const,
 	module.commonFileName,
 );
 
-template('commonFileType', [], module.commonFileType);
+template('commonFileType', [] as const, module.commonFileType);
 
 template(
 	'cron',
@@ -32,11 +32,11 @@ template(
 				key: '--include-year',
 			},
 		},
-	],
+	] as const,
 	module.cron,
 );
 
-template('directoryPath', [], module.directoryPath);
+template('directoryPath', [] as const, module.directoryPath);
 
 template(
 	'fileExt',
@@ -45,7 +45,7 @@ template(
 			key: '--mime-type <mimeType>',
 			transform: transformString,
 		},
-	],
+	] as const,
 	module.fileExt,
 );
 
@@ -58,15 +58,15 @@ template(
 				transform: transformInteger,
 			},
 		},
-	],
+	] as const,
 	module.fileName,
 );
 
-template('filePath', [], module.filePath);
+template('filePath', [] as const, module.filePath);
 
-template('fileType', [], module.fileType);
+template('fileType', [] as const, module.fileType);
 
-template('mimeType', [], module.mimeType);
+template('mimeType', [] as const, module.mimeType);
 
 template(
 	'networkInterface',
@@ -81,8 +81,8 @@ template(
 				transform: stringOf(new Set(['en', 'wl', 'ww'] as const)),
 			},
 		},
-	],
+	] as const,
 	module.networkInterface,
 );
 
-template('semver', [], module.semver);
+template('semver', [] as const, module.semver);

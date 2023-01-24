@@ -24,7 +24,7 @@ template('abstract', imageTemplate, module.abstract);
 
 template('animals', imageTemplate, module.animals);
 
-template('avatar', [], module.avatar);
+template('avatar', [] as const, module.avatar);
 
 template('business', imageTemplate, module.business);
 
@@ -47,7 +47,7 @@ template(
 			key: '--color <color>',
 			transform: transformString,
 		},
-	],
+	] as const,
 	module.dataUri,
 );
 
@@ -75,7 +75,7 @@ template(
 		{
 			key: '--randomize',
 		},
-	],
+	] as const,
 	module.imageUrl,
 );
 

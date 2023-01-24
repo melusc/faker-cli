@@ -19,7 +19,7 @@ template(
 			key: '--length <length>',
 			transform: transformInteger,
 		},
-	],
+	] as const,
 	module.array,
 );
 
@@ -36,11 +36,11 @@ template(
 				transform: matchRegex(/^\d+$/),
 			},
 		},
-	],
-	(options: {min: string; max: string}) => module.bigInt(options),
+	] as const,
+	module.bigInt,
 );
 
-template('boolean', [], module.boolean);
+template('boolean', [] as const, module.boolean);
 
 template(
 	'datetime',
@@ -55,8 +55,8 @@ template(
 				transform: transformInteger,
 			},
 		},
-	],
-	(options: {min: number; max: number}) => module.datetime(options),
+	] as const,
+	module.datetime,
 );
 
 template(
@@ -76,9 +76,8 @@ template(
 				transform: transformNumber,
 			},
 		},
-	],
-	(options: {min: number; max: number; precision: number}) =>
-		module.float(options),
+	] as const,
+	module.float,
 );
 
 template(
@@ -98,15 +97,11 @@ template(
 				transform: stringOf(new Set(['mixed', 'upper', 'lower'] as const)),
 			},
 		},
-	],
-	(options: {
-		length: number;
-		prefix: string;
-		case: 'upper' | 'lower' | 'mixed';
-	}) => module.hexadecimal(options),
+	] as const,
+	module.hexadecimal,
 );
 
-template('json', [], module.json);
+template('json', [] as const, module.json);
 
 template(
 	'number',
@@ -125,9 +120,8 @@ template(
 				transform: transformNumber,
 			},
 		},
-	],
-	(options: {min: number; max: number; precision: number}) =>
-		module.number(options),
+	] as const,
+	module.number,
 );
 
 template(
@@ -137,8 +131,8 @@ template(
 			key: '--length <length>',
 			transform: transformInteger,
 		},
-	],
+	] as const,
 	module.string,
 );
 
-template('uuid', [], module.uuid);
+template('uuid', [] as const, module.uuid);

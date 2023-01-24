@@ -13,11 +13,11 @@ template(
 			key: '--length <length>',
 			transform: transformInteger,
 		},
-	],
+	] as const,
 	module.account,
 );
 
-template('accountName', [], module.accountName);
+template('accountName', [] as const, module.accountName);
 
 template(
 	'amount',
@@ -41,7 +41,7 @@ template(
 		{
 			key: '--auto-format',
 		},
-	],
+	] as const,
 	module.amount,
 );
 
@@ -53,15 +53,15 @@ template(
 				key: '--include-branch-code',
 			},
 		},
-	],
+	] as const,
 	module.bic,
 );
 
-template('bitcoinAddress', [], module.bitcoinAddress);
+template('bitcoinAddress', [] as const, module.bitcoinAddress);
 
-template('creditCardCVV', [], module.creditCardCVV);
+template('creditCardCVV', [] as const, module.creditCardCVV);
 
-template('creditCardIssuer', [], module.creditCardIssuer);
+template('creditCardIssuer', [] as const, module.creditCardIssuer);
 
 template(
 	'creditCardNumber',
@@ -73,17 +73,17 @@ template(
 --issuer visa => 4882664999007
 --issuer "63[7-9]#-####-####-###L" => '6375-3265-4676-6646`,
 		},
-	],
+	] as const,
 	module.creditCardNumber,
 );
 
-template('currencyCode', [], module.currencyCode);
+template('currencyCode', [] as const, module.currencyCode);
 
-template('currencyName', [], module.currencyName);
+template('currencyName', [] as const, module.currencyName);
 
-template('currencySymbol', [], module.currencySymbol);
+template('currencySymbol', [] as const, module.currencySymbol);
 
-template('ethereumAddress', [], module.ethereumAddress);
+template('ethereumAddress', [] as const, module.ethereumAddress);
 
 template(
 	'iban',
@@ -95,11 +95,11 @@ template(
 			key: '--country-code <code>',
 			transform: transformString,
 		},
-	],
+	] as const,
 	module.iban,
 );
 
-template('litecoinAddress', [], module.litecoinAddress);
+template('litecoinAddress', [] as const, module.litecoinAddress);
 
 template(
 	'mask',
@@ -114,7 +114,7 @@ template(
 		{
 			key: '--ellipsis',
 		},
-	],
+	] as const,
 	module.mask,
 );
 
@@ -125,12 +125,12 @@ template(
 			key: '--length <length>',
 			transform: transformInteger,
 		},
-	],
+	] as const,
 	module.pin,
 );
 
-template('routingNumber', [], module.routingNumber);
+template('routingNumber', [] as const, module.routingNumber);
 
-template('transactionDescription', [], module.transactionDescription);
+template('transactionDescription', [] as const, module.transactionDescription);
 
-template('transactionType', [], module.transactionType);
+template('transactionType', [] as const, module.transactionType);

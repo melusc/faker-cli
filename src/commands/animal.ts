@@ -5,32 +5,32 @@ import {createTemplate} from '../command-template.js';
 const module = faker.animal;
 const template = createTemplate('animal');
 
-template('bear', [], module.bear);
+template('bear', [] as const, module.bear);
 
-template('bird', [], module.bird);
+template('bird', [] as const, module.bird);
 
-template('cat', [], module.cat);
+template('cat', [] as const, module.cat);
 
-template('cetacean', [], module.cetacean);
+template('cetacean', [] as const, module.cetacean);
 
-template('crocodilia', [], module.crocodilia);
+template('crocodilia', [] as const, module.crocodilia);
 
-template('cow', [], module.cow);
+template('cow', [] as const, module.cow);
 
-template('dog', [], module.dog);
+template('dog', [] as const, module.dog);
 
-template('fish', [], module.fish);
+template('fish', [] as const, module.fish);
 
-template('horse', [], module.horse);
+template('horse', [] as const, module.horse);
 
-template('insect', [], module.insect);
+template('insect', [] as const, module.insect);
 
-template('lion', [], module.lion);
+template('lion', [] as const, module.lion);
 
-template('rabbit', [], module.rabbit);
+template('rabbit', [] as const, module.rabbit);
 
-template('rodent', [], module.rodent);
+template('rodent', [] as const, module.rodent);
 
-template('snake', [], module.snake);
+template('snake', [] as const, module.snake);
 
-template('type', [], module.type);
+template('type', [] as const, module.type);

@@ -5,20 +5,20 @@ import {createTemplate} from '../command-template.js';
 const module = faker.vehicle;
 const template = createTemplate('vehicle');
 
-template('bicycle', [], module.bicycle);
+template('bicycle', [] as const, module.bicycle);
 
-template('color', [], module.color);
+template('color', [] as const, module.color);
 
-template('fuel', [], module.fuel);
+template('fuel', [] as const, module.fuel);
 
-template('manufacturer', [], module.manufacturer);
+template('manufacturer', [] as const, module.manufacturer);
 
-template('model', [], module.model);
+template('model', [] as const, module.model);
 
-template('type', [], module.type);
+template('type', [] as const, module.type);
 
-template('vehicle', [], module.vehicle);
+template('vehicle', [] as const, module.vehicle);
 
-template('vin', [], module.vin);
+template('vin', [] as const, module.vin);
 
-template('vrm', [], module.vrm);
+template('vrm', [] as const, module.vrm);

@@ -24,7 +24,7 @@ template(
 			},
 			bannedChars: {
 				key: '--banned-chars <chars>',
-				transform(s) {
+				transform(s: string | undefined) {
 					if (s === undefined) {
 						return s;
 					}
@@ -34,12 +34,8 @@ template(
 				description: 'Not comma seperated',
 			},
 		},
-	],
-	(options?: {
-		count?: number;
-		casing?: Casing;
-		bannedChars?: readonly string[] | string;
-	}) => module.alpha(options),
+	] as const,
+	module.alpha,
 );
 
 template(
@@ -58,7 +54,7 @@ template(
 			},
 			bannedChars: {
 				key: '--banned-chars <chars>',
-				transform(s) {
+				transform(s: string | undefined) {
 					if (s === undefined) {
 						return s;
 					}
@@ -68,17 +64,11 @@ template(
 				description: 'Not comma seperated',
 			},
 		},
-	],
-	(
-		count?: number,
-		options?: {
-			casing?: Casing;
-			bannedChars?: readonly string[] | string;
-		},
-	) => module.alphaNumeric(count, options),
+	] as const,
+	module.alphaNumeric,
 );
 
-template('locale', [], module.locale);
+template('locale', [] as const, module.locale);
 
 template(
 	'numeric',
@@ -93,7 +83,7 @@ template(
 			},
 			bannedDigits: {
 				key: '--banned-digits <digits>',
-				transform(s) {
+				transform(s: string | undefined) {
 					if (s === undefined) {
 						return s;
 					}
@@ -109,17 +99,11 @@ template(
 				description: 'Not comma seperated',
 			},
 		},
-	],
-	(
-		length?: number,
-		options?: {
-			allowLeadingZeros?: boolean;
-			bannedDigits?: readonly string[] | string;
-		},
-	) => module.numeric(length, options),
+	] as const,
+	module.numeric,
 );
 
-template('word', [], module.word);
+template('word', [] as const, module.word);
 
 template(
 	'words',
@@ -128,6 +112,6 @@ template(
 			key: '--count <count>',
 			transform: transformInteger,
 		},
-	],
+	] as const,
 	module.words,
 );

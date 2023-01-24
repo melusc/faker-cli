@@ -13,7 +13,7 @@ template(
 			transform: transformSexType,
 			key: '--sex <sex>',
 		},
-	],
+	] as const,
 	module.firstName,
 );
 
@@ -34,19 +34,19 @@ template(
 				key: '--sex <sex>',
 			},
 		},
-	],
+	] as const,
 	module.fullName,
 );
 
-template('gender', [], module.gender);
+template('gender', [] as const, module.gender);
 
-template('jobArea', [], module.jobArea);
+template('jobArea', [] as const, module.jobArea);
 
-template('jobDescriptor', [], module.jobDescriptor);
+template('jobDescriptor', [] as const, module.jobDescriptor);
 
-template('jobTitle', [], module.jobTitle);
+template('jobTitle', [] as const, module.jobTitle);
 
-template('jobType', [], module.jobType);
+template('jobType', [] as const, module.jobType);
 
 template(
 	['lastName', 'last'],
@@ -55,7 +55,7 @@ template(
 			transform: transformSexType,
 			key: '--sex <sex>',
 		},
-	],
+	] as const,
 	module.lastName,
 );
 
@@ -66,7 +66,7 @@ template(
 			transform: transformSexType,
 			key: '--sex <sex>',
 		},
-	],
+	] as const,
 	module.middleName,
 );
 
@@ -77,12 +77,12 @@ template(
 			transform: transformSexType,
 			key: '--sex <sex>',
 		},
-	],
+	] as const,
 	module.prefix,
 );
 
-template('sex', [], module.sex);
+template('sex', [] as const, module.sex);
 
-template('sexType', [], module.sexType);
+template('sexType', [] as const, module.sexType);
 
-template('suffix', [], module.suffix);
+template('suffix', [] as const, module.suffix);

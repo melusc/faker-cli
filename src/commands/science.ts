@@ -5,6 +5,6 @@ import {createTemplate} from '../command-template.js';
 const module = faker.science;
 const template = createTemplate('science');
 
-template('chemicalElement', [], module.chemicalElement);
+template('chemicalElement', [] as const, module.chemicalElement);
 
-template('unit', [], module.unit);
+template('unit', [] as const, module.unit);

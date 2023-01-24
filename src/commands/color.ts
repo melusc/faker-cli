@@ -6,31 +6,33 @@ import {stringOf} from '../util.js';
 const module = faker.color;
 const template = createTemplate('color');
 
-const colorFormat = {
-	format: {
-		key: '--format <format>',
-		transform: stringOf(new Set(['css', 'binary', 'decimal'] as const)),
+const colorFormat = [
+	{
+		format: {
+			key: '--format <format>',
+			transform: stringOf(new Set(['css', 'binary', 'decimal'] as const)),
+		},
 	},
-} as const;
+] as const;
 
-template('cmyk', [colorFormat], module.cmyk);
+template('cmyk', colorFormat, module.cmyk);
 
-template('colorByCSSColorSpace', [colorFormat], module.colorByCSSColorSpace);
+template('colorByCSSColorSpace', colorFormat, module.colorByCSSColorSpace);
 
-template('cssSupportedFunction', [], module.cssSupportedFunction);
+template('cssSupportedFunction', [] as const, module.cssSupportedFunction);
 
-template('cssSupportedSpace', [], module.cssSupportedSpace);
+template('cssSupportedSpace', [] as const, module.cssSupportedSpace);
 
-template('hsl', [colorFormat], module.hsl);
+template('hsl', colorFormat, module.hsl);
 
-template('human', [], module.human);
+template('human', [] as const, module.human);
 
-template('hwb', [colorFormat], module.hwb);
+template('hwb', colorFormat, module.hwb);
 
-template('lab', [colorFormat], module.lab);
+template('lab', colorFormat, module.lab);
 
-template('lch', [colorFormat], module.lch);
+template('lch', colorFormat, module.lch);
 
-template('rgb', [colorFormat], module.rgb);
+template('rgb', colorFormat, module.rgb);
 
-template('space', [], module.space);
+template('space', [] as const, module.space);

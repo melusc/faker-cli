@@ -13,7 +13,7 @@ template(
 			key: '--line-count <count>',
 			transform: transformInteger,
 		},
-	],
+	] as const,
 	module.lines,
 );
 
@@ -24,7 +24,7 @@ template(
 			key: '--sentence-count <count>',
 			transform: transformInteger,
 		},
-	],
+	] as const,
 	module.paragraph,
 );
 
@@ -39,7 +39,7 @@ template(
 			key: '--separator <sep>',
 			transform: transformString,
 		},
-	],
+	] as const,
 	module.paragraphs,
 );
 
@@ -50,7 +50,7 @@ template(
 			key: '--word-count <count>',
 			transform: transformInteger,
 		},
-	],
+	] as const,
 	module.sentence,
 );
 
@@ -65,7 +65,7 @@ template(
 			key: '--separator <sep>',
 			transform: transformString,
 		},
-	],
+	] as const,
 	module.sentences,
 );
 
@@ -76,45 +76,45 @@ template(
 			key: '--word-count <count>',
 			transform: transformInteger,
 		},
-	],
+	] as const,
 	module.slug,
 );
 
-template('text', [], module.text);
+template('text', [] as const, module.text);
 
 template(
 	'word',
 	[
 		{
-			min: {
-				key: '--min <min>',
-				transform: transformInteger,
+			length: {
+				min: {
+					key: '--min <min>',
+					transform: transformInteger,
+				},
+				max: {
+					key: '--max <max>',
+					transform: transformInteger,
+				},
 			},
-			max: {
-				key: '--max <max>',
-				transform: transformInteger,
+			strategy: {
+				key: '--strategy <strategy>',
+				transform: stringOf(
+					new Set([
+						'fail',
+						'closest',
+						'shortest',
+						'longest',
+						'any-length',
+					] as const),
+				),
 			},
 		},
-		{
-			key: '--strategy <strategy>',
-			transform: stringOf(
-				new Set([
-					'fail',
-					'closest',
-					'shortest',
-					'longest',
-					'any-length',
-				] as const),
-			),
-		},
-	],
-	(
-		length: {min: number; max: number},
-		strategy: 'fail' | 'closest' | 'shortest' | 'longest' | 'any-length',
-	) => module.word({length, strategy}),
+	] as const,
+	module.word,
 	{
 		pre(...args) {
-			const [{min, max}] = args;
+			const min = args[0]?.length?.min;
+			const max = args[0]?.length?.max;
 			if ((min === undefined) !== (max === undefined)) {
 				throw new Error('max and min should both be undefined or both defined');
 			}
@@ -131,6 +131,6 @@ template(
 			key: '--amount <amount>',
 			transform: transformInteger,
 		},
-	],
+	] as const,
 	module.words,
 );
