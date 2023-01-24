@@ -1,11 +1,11 @@
 import {faker} from '@faker-js/faker';
 
-import {createTemplate} from '../command-template.js';
+import {BooleanFlag, Flag, createTemplate} from '../command-template.js';
 import {
 	stringOf,
 	transformInteger,
 	transformNumber,
-	transformString,
+	identity,
 } from '../util.js';
 
 const module = faker.address;
@@ -16,9 +16,9 @@ template('buildingNumber', [] as const, module.buildingNumber);
 template(
 	'cardinalDirection',
 	[
-		{
-			key: '--use-abbreviation',
-		},
+		new BooleanFlag({
+			flag: '--use-abbreviation',
+		}),
 	] as const,
 	module.cardinalDirection,
 );
@@ -32,10 +32,10 @@ template('country', [] as const, module.country);
 template(
 	'countryCode',
 	[
-		{
-			key: '--alpha-code <code>',
+		new Flag({
+			flag: '--alpha-code <code>',
 			transform: stringOf(new Set(['alpha-2', 'alpha-3'] as const)),
-		},
+		}),
 	] as const,
 	module.countryCode,
 );
@@ -45,9 +45,9 @@ template('county', [] as const, module.county);
 template(
 	'direction',
 	[
-		{
-			key: '--use-abbreviation',
-		},
+		new BooleanFlag({
+			flag: '--use-abbreviation',
+		}),
 	] as const,
 	module.direction,
 );
@@ -55,18 +55,18 @@ template(
 template(
 	'latitude',
 	[
-		{
-			key: '--max <max>',
+		new Flag({
+			flag: '--max <max>',
 			transform: transformNumber,
-		},
-		{
-			key: '--min <min>',
+		}),
+		new Flag({
+			flag: '--min <min>',
 			transform: transformNumber,
-		},
-		{
-			key: '--precision <precision>',
+		}),
+		new Flag({
+			flag: '--precision <precision>',
 			transform: transformInteger,
-		},
+		}),
 	] as const,
 	module.latitude,
 );
@@ -74,18 +74,18 @@ template(
 template(
 	'longitude',
 	[
-		{
-			key: '--max <max>',
+		new Flag({
+			flag: '--max <max>',
 			transform: transformNumber,
-		},
-		{
-			key: '--min <min>',
+		}),
+		new Flag({
+			flag: '--min <min>',
 			transform: transformNumber,
-		},
-		{
-			key: '--precision <precision>',
+		}),
+		new Flag({
+			flag: '--precision <precision>',
 			transform: transformInteger,
-		},
+		}),
 	] as const,
 	module.longitude,
 );
@@ -94,22 +94,22 @@ template(
 	'nearbyGPSCoordinate',
 	[
 		[
-			{
-				key: '--latitude <latitude>',
+			new Flag({
+				flag: '--latitude <latitude>',
 				transform: transformNumber,
-			},
-			{
-				key: '--longitude <longitude>',
+			}),
+			new Flag({
+				flag: '--longitude <longitude>',
 				transform: transformNumber,
-			},
+			}),
 		],
-		{
-			key: '--radius <radius>',
+		new Flag({
+			flag: '--radius <radius>',
 			transform: transformNumber,
-		},
-		{
-			key: '--metric',
-		},
+		}),
+		new BooleanFlag({
+			flag: '--metric',
+		}),
 	] as const,
 	module.nearbyGPSCoordinate,
 	{
@@ -141,9 +141,9 @@ template(
 template(
 	'ordinalDirection',
 	[
-		{
-			key: '--use-abbreviation',
-		},
+		new BooleanFlag({
+			flag: '--use-abbreviation',
+		}),
 	] as const,
 	module.ordinalDirection,
 );
@@ -159,9 +159,9 @@ template('street', [] as const, module.street);
 template(
 	'streetAddress',
 	[
-		{
-			key: '--use-full-address',
-		},
+		new BooleanFlag({
+			flag: '--use-full-address',
+		}),
 	] as const,
 	module.streetAddress,
 );
@@ -173,11 +173,11 @@ template('timeZone', [] as const, module.timeZone);
 template(
 	'zipCode',
 	[
-		{
-			key: '--format <format>',
-			transform: transformString,
+		new Flag({
+			flag: '--format <format>',
+			transform: identity,
 			description: '"#" is replaced with a number.',
-		},
+		}),
 	] as const,
 	module.zipCode,
 );
@@ -185,11 +185,11 @@ template(
 template(
 	'zipCodeByState',
 	[
-		{
-			key: '--state <state>',
-			transform: transformString,
+		new Flag({
+			flag: '--state <state>',
+			transform: identity,
 			required: true,
-		},
+		}),
 	] as const,
 	module.zipCodeByState,
 );

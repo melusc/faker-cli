@@ -1,7 +1,7 @@
 import {faker} from '@faker-js/faker';
 
-import {createTemplate} from '../command-template.js';
-import {stringOf, transformInteger, transformString} from '../util.js';
+import {Flag, createTemplate} from '../command-template.js';
+import {stringOf, transformInteger, identity} from '../util.js';
 
 const module = faker.lorem;
 const template = createTemplate('lorem');
@@ -9,10 +9,10 @@ const template = createTemplate('lorem');
 template(
 	'lines',
 	[
-		{
-			key: '--line-count <count>',
+		new Flag({
+			flag: '--line-count <count>',
 			transform: transformInteger,
-		},
+		}),
 	] as const,
 	module.lines,
 );
@@ -20,10 +20,10 @@ template(
 template(
 	'paragraph',
 	[
-		{
-			key: '--sentence-count <count>',
+		new Flag({
+			flag: '--sentence-count <count>',
 			transform: transformInteger,
-		},
+		}),
 	] as const,
 	module.paragraph,
 );
@@ -31,14 +31,14 @@ template(
 template(
 	'paragraphs',
 	[
-		{
-			key: '--paragraph-count <count>',
+		new Flag({
+			flag: '--paragraph-count <count>',
 			transform: transformInteger,
-		},
-		{
-			key: '--separator <sep>',
-			transform: transformString,
-		},
+		}),
+		new Flag({
+			flag: '--separator <sep>',
+			transform: identity,
+		}),
 	] as const,
 	module.paragraphs,
 );
@@ -46,10 +46,10 @@ template(
 template(
 	'sentence',
 	[
-		{
-			key: '--word-count <count>',
+		new Flag({
+			flag: '--word-count <count>',
 			transform: transformInteger,
-		},
+		}),
 	] as const,
 	module.sentence,
 );
@@ -57,14 +57,14 @@ template(
 template(
 	'sentences',
 	[
-		{
-			key: '--sentence-count <count>',
+		new Flag({
+			flag: '--sentence-count <count>',
 			transform: transformInteger,
-		},
-		{
-			key: '--separator <sep>',
-			transform: transformString,
-		},
+		}),
+		new Flag({
+			flag: '--separator <sep>',
+			transform: identity,
+		}),
 	] as const,
 	module.sentences,
 );
@@ -72,10 +72,10 @@ template(
 template(
 	'slug',
 	[
-		{
-			key: '--word-count <count>',
+		new Flag({
+			flag: '--word-count <count>',
 			transform: transformInteger,
-		},
+		}),
 	] as const,
 	module.slug,
 );
@@ -87,17 +87,17 @@ template(
 	[
 		{
 			length: {
-				min: {
-					key: '--min <min>',
+				min: new Flag({
+					flag: '--min <min>',
 					transform: transformInteger,
-				},
-				max: {
-					key: '--max <max>',
+				}),
+				max: new Flag({
+					flag: '--max <max>',
 					transform: transformInteger,
-				},
+				}),
 			},
-			strategy: {
-				key: '--strategy <strategy>',
+			strategy: new Flag({
+				flag: '--strategy <strategy>',
 				transform: stringOf(
 					new Set([
 						'fail',
@@ -107,7 +107,7 @@ template(
 						'any-length',
 					] as const),
 				),
-			},
+			}),
 		},
 	] as const,
 	module.word,
@@ -127,10 +127,10 @@ template(
 template(
 	'words',
 	[
-		{
-			key: '--amount <amount>',
+		new Flag({
+			flag: '--amount <amount>',
 			transform: transformInteger,
-		},
+		}),
 	] as const,
 	module.words,
 );

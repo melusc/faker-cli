@@ -2,47 +2,123 @@ import {faker} from '@faker-js/faker';
 import camelCase from 'camelcase';
 import {program, type Command} from 'commander';
 
-type BaseTemplate = {
-	readonly required?: boolean | undefined;
-	readonly description?: string | undefined;
-};
-type BooleanTemplate = {
-	readonly key: string;
-} & BaseTemplate;
-type OtherTemplate<T> = {
-	readonly transform: (s: string | undefined) => T | undefined;
-	readonly key: string;
-} & BaseTemplate;
-type SingleTemplate<T> = IsBoolean<T> extends true
-	? BooleanTemplate
-	: OtherTemplate<T>;
+export class BooleanFlag<Required extends boolean = false> {
+	readonly flag: string;
+	readonly required: boolean;
+	readonly description: string | undefined;
 
-type ExtractKeys<T> = T extends SingleTemplate<infer T>
-	? SingleTemplate<T>
+	constructor(options: {
+		flag: `--${string}`;
+		required?: Required;
+		description?: string;
+	}) {
+		this.flag = options.flag;
+		this.required = options.required ?? false;
+		this.description = options.description;
+	}
+
+	get(
+		program: Command,
+	): Required extends false ? boolean | undefined : boolean {
+		const key = camelcaseKey(this.flag);
+		const value = program.getOptionValue(key) as unknown;
+
+		if (value === undefined) {
+			if (this.required) {
+				throw new Error(`${this.flag} is required`);
+			}
+
+			// @ts-expect-error this.required is already checked
+			return undefined;
+		}
+
+		if (typeof value !== 'boolean') {
+			throw new TypeError(
+				`Unexpected non-boolean (${typeof value}) for boolean flag ${
+					this.flag
+				}`,
+			);
+		}
+
+		return value;
+	}
+}
+
+export class Flag<Type, Required extends boolean = false> {
+	readonly flag: string;
+	readonly required: boolean;
+	readonly transform: (s: string) => Type;
+	readonly description: string | undefined;
+
+	constructor(options: {
+		flag: `--${string} <${string}>`;
+		transform: (s: string) => Type;
+		description?: string;
+		required?: Required;
+	}) {
+		this.flag = options.flag;
+		this.transform = options.transform;
+		this.description = options.description;
+		this.required = options.required ?? false;
+	}
+
+	get(program: Command): Required extends false ? Type | undefined : Type {
+		const key = camelcaseKey(this.flag);
+		const value = program.getOptionValue(key) as string | undefined;
+		if (value === undefined) {
+			if (this.required) {
+				throw new Error(`${this.flag} is required`);
+			}
+
+			// @ts-expect-error this.required is already checked
+			return undefined;
+		}
+
+		if (typeof value !== 'string') {
+			throw new TypeError(
+				`Unexpected non-string (${typeof value}) from raw input for ${
+					this.flag
+				}`,
+			);
+		}
+
+		return this.transform(value);
+	}
+}
+
+type ExtractKeys<T> = T extends Flag<infer T>
+	? Flag<T>
+	: T extends BooleanFlag
+	? BooleanFlag
 	: T extends Record<string, infer R>
 	? ExtractKeys<R>
 	: T extends ReadonlyArray<infer R>
 	? ExtractKeys<R>
 	: never;
 
-type IsBoolean<T> = T extends boolean ? true : false;
-
+type SimpleTemplate =
+	| BooleanFlag
+	| BooleanFlag<true>
+	| Flag<unknown>
+	| Flag<unknown, true>;
+// Disallow arbitrarily deeply nested objects or arrays
+type TemplateLevel1 =
+	| SimpleTemplate
+	| Readonly<Record<string, SimpleTemplate>>
+	| readonly SimpleTemplate[];
 type Template =
-	| BooleanTemplate
-	| SingleTemplate<any>
-	| {
-			readonly [key: string]: Template;
-	  }
-	| readonly Template[];
+	| SimpleTemplate
+	| Readonly<Record<string, TemplateLevel1>>
+	| readonly TemplateLevel1[];
 
 type IsArrayOrRecord<T> = T extends Record<string, any>
 	? true
 	: T extends any[]
 	? true
 	: false;
-type ToArgRecursive<T> = T extends OtherTemplate<infer T>
+type ToArgRecursive<T> = T extends Flag<infer T>
 	? T
-	: T extends BooleanTemplate
+	: T extends BooleanFlag
 	? boolean
 	: IsArrayOrRecord<T> extends true
 	? {
@@ -57,7 +133,6 @@ type ToArguments<T extends readonly Template[]> = {
 type TemplateFunction = <TemplateActual extends readonly Template[], Return>(
 	name: string | readonly string[],
 	template: TemplateActual,
-	// @ts-expect-error In reality it is not infinitely deep
 	callback: (...args: ToArguments<TemplateActual>) => Return,
 	transform?: {
 		pre?: (
@@ -67,19 +142,9 @@ type TemplateFunction = <TemplateActual extends readonly Template[], Return>(
 	},
 ) => void;
 
-function isSingleTemplate(
-	item: any,
-): item is SingleTemplate<any> | BooleanTemplate {
-	if ('transform' in item && typeof item.transform === 'function') {
+function isSingleTemplate(item: any): item is Flag<any> | BooleanFlag {
+	if (item instanceof Flag || item instanceof BooleanFlag) {
 		return true;
-	}
-
-	if (Object.keys(item).length === 1) {
-		return 'key' in item;
-	}
-
-	if (Object.keys(item).length === 2) {
-		return 'key' in item && 'required' in item;
 	}
 
 	return false;
@@ -87,7 +152,7 @@ function isSingleTemplate(
 
 function * extractKeys<TemplateActual extends readonly Template[]>(
 	template: TemplateActual,
-): Iterable<ExtractKeys<TemplateActual>> {
+): Iterable<BooleanFlag | Flag<unknown>> {
 	function * extractAny<T extends Template>(item: T): Iterable<ExtractKeys<T>> {
 		if (isSingleTemplate(item)) {
 			validateKey(item);
@@ -103,20 +168,19 @@ function * extractKeys<TemplateActual extends readonly Template[]>(
 	}
 
 	for (const item of template) {
-		// @ts-expect-error In reality it is not infinitely deep
 		yield * extractAny(item);
 	}
 }
 
 const cliKeyRegex = /^--(?<key>[a-z-]+)(?:\s<[\w\s]+>)?$/;
-function validateKey(item: SingleTemplate<any> | BooleanTemplate) {
-	if ('transform' in item) {
-		if (!/^--[a-z-]+\s<[\w\s]+>$/.test(item.key)) {
-			throw new Error(`Flag "${item.key}" did not match the required format.`);
+function validateKey(item: Flag<any> | BooleanFlag) {
+	if (item instanceof Flag) {
+		if (!/^--[a-z-]+\s<[\w\s]+>$/.test(item.flag)) {
+			throw new Error(`Flag "${item.flag}" did not match the required format.`);
 		}
-	} else if (!/^--[a-z-]+$/.test(item.key)) {
+	} else if (!/^--[a-z-]+$/.test(item.flag)) {
 		throw new Error(
-			`boolean flag "${item.key}" did not match the required format.`,
+			`boolean flag "${item.flag}" did not match the required format.`,
 		);
 	}
 }
@@ -132,31 +196,10 @@ function fill<TemplateActual extends readonly Template[]>(
 ): ToArguments<TemplateActual> {
 	function recursiveFill<R extends Template>(item: R): ToArgRecursive<R> {
 		if (isSingleTemplate(item)) {
-			const value = program.getOptionValue(camelcaseKey(item.key)) as
-				| string
-				| undefined
-				| boolean;
-			if (value === undefined && item.required) {
-				throw new Error(`${item.key} was required.`);
-			}
-
-			if (typeof value === 'boolean') {
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-				return value as ToArgRecursive<R>;
-			}
-
-			if ('transform' in item) {
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-				return item.transform(value) as ToArgRecursive<R>;
-			}
-
-			throw new Error(
-				`Value was not boolean (${typeof value}) and got no transform function.`,
-			);
+			return item.get(program) as ToArgRecursive<R>;
 		}
 
 		if (Array.isArray(item)) {
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 			return item.map(item => recursiveFill(item)) as ToArgRecursive<R>;
 		}
 
@@ -170,12 +213,11 @@ function fill<TemplateActual extends readonly Template[]>(
 			result[key] = recursiveFill(value);
 		}
 
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 		return result as ToArgRecursive<R>;
 	}
 
-	return template.map(
-		item => recursiveFill(item) as unknown,
+	return template.map(item =>
+		recursiveFill(item),
 	) as ToArguments<TemplateActual>;
 }
 
@@ -231,11 +273,11 @@ export function createTemplate(name: string | string[]): TemplateFunction {
 	return ((name, template, callback, transform) => {
 		const subSubProgram = commandFromName(subProgram, name, scopeCommands);
 		const keys = [...extractKeys(template)];
-		for (const {required, key, description} of keys) {
+		for (const {required, flag, description} of keys) {
 			if (required) {
-				subSubProgram.requiredOption(key, description);
+				subSubProgram.requiredOption(flag, description);
 			} else {
-				subSubProgram.option(key, description);
+				subSubProgram.option(flag, description);
 			}
 		}
 

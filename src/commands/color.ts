@@ -1,6 +1,6 @@
 import {faker} from '@faker-js/faker';
 
-import {createTemplate} from '../command-template.js';
+import {Flag, createTemplate} from '../command-template.js';
 import {stringOf} from '../util.js';
 
 const module = faker.color;
@@ -8,10 +8,10 @@ const template = createTemplate('color');
 
 const colorFormat = [
 	{
-		format: {
-			key: '--format <format>',
+		format: new Flag({
+			flag: '--format <format>',
 			transform: stringOf(new Set(['css', 'binary', 'decimal'] as const)),
-		},
+		}),
 	},
 ] as const;
 

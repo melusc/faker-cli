@@ -1,6 +1,6 @@
 import {faker} from '@faker-js/faker';
 
-import {createTemplate} from '../command-template.js';
+import {BooleanFlag, Flag, createTemplate} from '../command-template.js';
 import {stringOf, transformInteger} from '../util.js';
 
 const module = faker.random;
@@ -12,18 +12,18 @@ template(
 	'alpha',
 	[
 		{
-			count: {
-				key: '--count <count>',
+			count: new Flag({
+				flag: '--count <count>',
 				transform: transformInteger,
-			},
-			casing: {
-				key: '--casing <case>',
+			}),
+			casing: new Flag({
+				flag: '--casing <case>',
 				transform: stringOf(
 					new Set<Casing>(['upper', 'mixed', 'lower'] as const),
 				),
-			},
-			bannedChars: {
-				key: '--banned-chars <chars>',
+			}),
+			bannedChars: new Flag({
+				flag: '--banned-chars <chars>',
 				transform(s: string | undefined) {
 					if (s === undefined) {
 						return s;
@@ -32,7 +32,7 @@ template(
 					return [...s];
 				},
 				description: 'Not comma seperated',
-			},
+			}),
 		},
 	] as const,
 	module.alpha,
@@ -41,19 +41,19 @@ template(
 template(
 	'alphaNumeric',
 	[
-		{
-			key: '--count <count>',
+		new Flag({
+			flag: '--count <count>',
 			transform: transformInteger,
-		},
+		}),
 		{
-			casing: {
-				key: '--casing <case>',
+			casing: new Flag({
+				flag: '--casing <case>',
 				transform: stringOf(
 					new Set<Casing>(['upper', 'mixed', 'lower'] as const),
 				),
-			},
-			bannedChars: {
-				key: '--banned-chars <chars>',
+			}),
+			bannedChars: new Flag({
+				flag: '--banned-chars <chars>',
 				transform(s: string | undefined) {
 					if (s === undefined) {
 						return s;
@@ -62,7 +62,7 @@ template(
 					return [...s];
 				},
 				description: 'Not comma seperated',
-			},
+			}),
 		},
 	] as const,
 	module.alphaNumeric,
@@ -73,16 +73,16 @@ template('locale', [] as const, module.locale);
 template(
 	'numeric',
 	[
-		{
-			key: '--length <length>',
+		new Flag({
+			flag: '--length <length>',
 			transform: transformInteger,
-		},
+		}),
 		{
-			allowLeadingZeros: {
-				key: '--allow-leading-zeros',
-			},
-			bannedDigits: {
-				key: '--banned-digits <digits>',
+			allowLeadingZeros: new BooleanFlag({
+				flag: '--allow-leading-zeros',
+			}),
+			bannedDigits: new Flag({
+				flag: '--banned-digits <digits>',
 				transform(s: string | undefined) {
 					if (s === undefined) {
 						return s;
@@ -97,7 +97,7 @@ template(
 					return [...s];
 				},
 				description: 'Not comma seperated',
-			},
+			}),
 		},
 	] as const,
 	module.numeric,
@@ -108,10 +108,10 @@ template('word', [] as const, module.word);
 template(
 	'words',
 	[
-		{
-			key: '--count <count>',
+		new Flag({
+			flag: '--count <count>',
 			transform: transformInteger,
-		},
+		}),
 	] as const,
 	module.words,
 );

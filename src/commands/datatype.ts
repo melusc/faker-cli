@@ -1,12 +1,12 @@
 import {faker} from '@faker-js/faker';
 
-import {createTemplate} from '../command-template.js';
+import {Flag, createTemplate} from '../command-template.js';
 import {
 	matchRegex,
 	stringOf,
 	transformInteger,
 	transformNumber,
-	transformString,
+	identity,
 } from '../util.js';
 
 const module = faker.datatype;
@@ -15,10 +15,10 @@ const template = createTemplate('datatype');
 template(
 	'array',
 	[
-		{
-			key: '--length <length>',
+		new Flag({
+			flag: '--length <length>',
 			transform: transformInteger,
-		},
+		}),
 	] as const,
 	module.array,
 );
@@ -27,14 +27,14 @@ template(
 	'bigInt',
 	[
 		{
-			min: {
-				key: '--min <min>',
+			min: new Flag({
+				flag: '--min <min>',
 				transform: matchRegex(/^\d+$/),
-			},
-			max: {
-				key: '--max <max>',
+			}),
+			max: new Flag({
+				flag: '--max <max>',
 				transform: matchRegex(/^\d+$/),
-			},
+			}),
 		},
 	] as const,
 	module.bigInt,
@@ -46,14 +46,14 @@ template(
 	'datetime',
 	[
 		{
-			min: {
-				key: '--min <min>',
+			min: new Flag({
+				flag: '--min <min>',
 				transform: transformInteger,
-			},
-			max: {
-				key: '--max <max>',
+			}),
+			max: new Flag({
+				flag: '--max <max>',
 				transform: transformInteger,
-			},
+			}),
 		},
 	] as const,
 	module.datetime,
@@ -63,18 +63,18 @@ template(
 	'float',
 	[
 		{
-			min: {
-				key: '--min <min>',
+			min: new Flag({
+				flag: '--min <min>',
 				transform: transformNumber,
-			},
-			max: {
-				key: '--max <max>',
+			}),
+			max: new Flag({
+				flag: '--max <max>',
 				transform: transformNumber,
-			},
-			precision: {
-				key: '--precision <precision>',
+			}),
+			precision: new Flag({
+				flag: '--precision <precision>',
 				transform: transformNumber,
-			},
+			}),
 		},
 	] as const,
 	module.float,
@@ -84,18 +84,18 @@ template(
 	'hexadecimal',
 	[
 		{
-			length: {
-				key: '--length <length>',
+			length: new Flag({
+				flag: '--length <length>',
 				transform: transformInteger,
-			},
-			prefix: {
-				key: '--prefix <prefix>',
-				transform: transformString,
-			},
-			case: {
-				key: '--case <case>',
+			}),
+			prefix: new Flag({
+				flag: '--prefix <prefix>',
+				transform: identity,
+			}),
+			case: new Flag({
+				flag: '--case <case>',
 				transform: stringOf(new Set(['mixed', 'upper', 'lower'] as const)),
-			},
+			}),
 		},
 	] as const,
 	module.hexadecimal,
@@ -107,18 +107,18 @@ template(
 	'number',
 	[
 		{
-			min: {
-				key: '--min <min>',
+			min: new Flag({
+				flag: '--min <min>',
 				transform: transformNumber,
-			},
-			max: {
-				key: '--max <max>',
+			}),
+			max: new Flag({
+				flag: '--max <max>',
 				transform: transformNumber,
-			},
-			precision: {
-				key: '--precision <precision>',
+			}),
+			precision: new Flag({
+				flag: '--precision <precision>',
 				transform: transformNumber,
-			},
+			}),
 		},
 	] as const,
 	module.number,
@@ -127,10 +127,10 @@ template(
 template(
 	'string',
 	[
-		{
-			key: '--length <length>',
+		new Flag({
+			flag: '--length <length>',
 			transform: transformInteger,
-		},
+		}),
 	] as const,
 	module.string,
 );

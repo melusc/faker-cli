@@ -1,6 +1,6 @@
 import {faker} from '@faker-js/faker';
 
-import {createTemplate} from '../command-template.js';
+import {BooleanFlag, Flag, createTemplate} from '../command-template.js';
 import {stringOf} from '../util.js';
 
 const module = faker.git;
@@ -12,13 +12,13 @@ template(
 	'commitEntry',
 	[
 		{
-			eol: {
-				key: '--eol <eol>',
+			eol: new Flag({
+				flag: '--eol <eol>',
 				transform: stringOf(new Set(['LF', 'CRLF'] as const)),
-			},
-			merge: {
-				key: '--merge',
-			},
+			}),
+			merge: new BooleanFlag({
+				flag: '--merge',
+			}),
 		},
 	] as const,
 	module.commitEntry,

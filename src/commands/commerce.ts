@@ -1,7 +1,7 @@
 import {faker} from '@faker-js/faker';
 
-import {createTemplate} from '../command-template.js';
-import {transformInteger, transformNumber, transformString} from '../util.js';
+import {Flag, createTemplate} from '../command-template.js';
+import {transformInteger, transformNumber, identity} from '../util.js';
 
 const module = faker.commerce;
 const template = createTemplate('commerce');
@@ -11,22 +11,22 @@ template('department', [] as const, module.department);
 template(
 	'price',
 	[
-		{
-			key: '--min <min>',
+		new Flag({
+			flag: '--min <min>',
 			transform: transformNumber,
-		},
-		{
-			key: '--max <max>',
+		}),
+		new Flag({
+			flag: '--max <max>',
 			transform: transformNumber,
-		},
-		{
-			key: '--precision <precision>',
+		}),
+		new Flag({
+			flag: '--precision <precision>',
 			transform: transformInteger,
-		},
-		{
-			key: '--symbol <symbol>',
-			transform: transformString,
-		},
+		}),
+		new Flag({
+			flag: '--symbol <symbol>',
+			transform: identity,
+		}),
 	] as const,
 	module.price,
 );

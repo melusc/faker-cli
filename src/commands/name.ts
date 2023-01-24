@@ -1,7 +1,7 @@
 import {faker} from '@faker-js/faker';
 
-import {createTemplate} from '../command-template.js';
-import {transformSexType, transformString} from '../util.js';
+import {Flag, createTemplate} from '../command-template.js';
+import {transformSexType, identity} from '../util.js';
 
 const module = faker.name;
 const template = createTemplate('name');
@@ -9,10 +9,10 @@ const template = createTemplate('name');
 template(
 	['firstName', 'first'],
 	[
-		{
+		new Flag({
 			transform: transformSexType,
-			key: '--sex <sex>',
-		},
+			flag: '--sex <sex>',
+		}),
 	] as const,
 	module.firstName,
 );
@@ -21,18 +21,18 @@ template(
 	['fullName', 'full'],
 	[
 		{
-			firstName: {
-				transform: transformString,
-				key: '--first-name <name>',
-			},
-			lastName: {
-				transform: transformString,
-				key: '--last-name <name>',
-			},
-			sex: {
+			firstName: new Flag({
+				transform: identity,
+				flag: '--first-name <name>',
+			}),
+			lastName: new Flag({
+				transform: identity,
+				flag: '--last-name <name>',
+			}),
+			sex: new Flag({
 				transform: transformSexType,
-				key: '--sex <sex>',
-			},
+				flag: '--sex <sex>',
+			}),
 		},
 	] as const,
 	module.fullName,
@@ -51,10 +51,10 @@ template('jobType', [] as const, module.jobType);
 template(
 	['lastName', 'last'],
 	[
-		{
+		new Flag({
 			transform: transformSexType,
-			key: '--sex <sex>',
-		},
+			flag: '--sex <sex>',
+		}),
 	] as const,
 	module.lastName,
 );
@@ -62,10 +62,10 @@ template(
 template(
 	['middleName', 'middle'],
 	[
-		{
+		new Flag({
 			transform: transformSexType,
-			key: '--sex <sex>',
-		},
+			flag: '--sex <sex>',
+		}),
 	] as const,
 	module.middleName,
 );
@@ -73,10 +73,10 @@ template(
 template(
 	'prefix',
 	[
-		{
+		new Flag({
 			transform: transformSexType,
-			key: '--sex <sex>',
-		},
+			flag: '--sex <sex>',
+		}),
 	] as const,
 	module.prefix,
 );

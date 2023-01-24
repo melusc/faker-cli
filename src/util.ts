@@ -1,10 +1,6 @@
 import {type SexType} from '@faker-js/faker';
 
-export function transformSexType(s: string | undefined): SexType | undefined {
-	if (s === undefined) {
-		return undefined;
-	}
-
+export function transformSexType(s: string): SexType {
 	if (/^m(?:ale)?$/.test(s)) {
 		return 'male';
 	}
@@ -16,11 +12,7 @@ export function transformSexType(s: string | undefined): SexType | undefined {
 	throw new Error(`Unexpected sex type "${s}".`);
 }
 
-export function transformBoolean(s: string | undefined): boolean | undefined {
-	if (s === undefined) {
-		return undefined;
-	}
-
+export function transformBoolean(s: string): boolean {
 	if (/^(t|true|y|yes)$/i.test(s)) {
 		return true;
 	}
@@ -32,11 +24,7 @@ export function transformBoolean(s: string | undefined): boolean | undefined {
 	throw new Error(`Unexpected boolean "${s}".`);
 }
 
-export function transformNumber(s: string | undefined): number | undefined {
-	if (s === undefined) {
-		return undefined;
-	}
-
+export function transformNumber(s: string): number {
 	const parsed = Number(s);
 
 	if (Number.isFinite(parsed)) {
@@ -46,11 +34,7 @@ export function transformNumber(s: string | undefined): number | undefined {
 	throw new Error(`Could not parse "${s}" to a finite number.`);
 }
 
-export function transformInteger(s: string | undefined): number | undefined {
-	if (s === undefined) {
-		return undefined;
-	}
-
+export function transformInteger(s: string): number {
 	const parsed = Number(s);
 
 	if (Number.isInteger(parsed)) {
@@ -69,12 +53,8 @@ export function transformInteger(s: string | undefined): number | undefined {
  * @param high inclusive
  */
 export function integerBetween(low: number, high: number) {
-	return (s: string | undefined): number | undefined => {
+	return (s: string): number => {
 		const parsed = transformInteger(s);
-
-		if (parsed === undefined) {
-			return undefined;
-		}
 
 		if (low <= parsed && parsed <= high) {
 			return parsed;
@@ -84,18 +64,12 @@ export function integerBetween(low: number, high: number) {
 	};
 }
 
-export function transformString(s: string | undefined): string | undefined {
+export function identity<T>(s: T): T {
 	return s;
 }
 
-export function stringOf<T extends string>(
-	set: Set<T>,
-): (s: string | undefined) => T | undefined {
-	return (s: string | undefined) => {
-		if (s === undefined) {
-			return undefined;
-		}
-
+export function stringOf<T extends string>(set: Set<T>): (s: string) => T {
+	return (s: string) => {
 		if (set.has(s as T)) {
 			return s as T;
 		}
@@ -104,14 +78,8 @@ export function stringOf<T extends string>(
 	};
 }
 
-export function matchRegex(
-	regex: RegExp,
-): (s: string | undefined) => string | undefined {
+export function matchRegex(regex: RegExp): (s: string) => string {
 	return s => {
-		if (s === undefined) {
-			return undefined;
-		}
-
 		if (!regex.test(s)) {
 			throw new Error(`Expected "${s}" to match ${String(regex)}`);
 		}

@@ -1,23 +1,23 @@
 import {faker} from '@faker-js/faker';
 
-import {createTemplate} from '../command-template.js';
-import {transformInteger, transformNumber, transformString} from '../util.js';
+import {BooleanFlag, Flag, createTemplate} from '../command-template.js';
+import {transformInteger, transformNumber, identity} from '../util.js';
 
 const module = faker.image;
 const template = createTemplate('image');
 
 const imageTemplate = [
-	{
-		key: '--width <width>',
+	new Flag({
+		flag: '--width <width>',
 		transform: transformInteger,
-	},
-	{
-		key: '--height <height>',
+	}),
+	new Flag({
+		flag: '--height <height>',
 		transform: transformInteger,
-	},
-	{
-		key: '--randomize',
-	},
+	}),
+	new BooleanFlag({
+		flag: '--randomize',
+	}),
 ] as const;
 
 template('abstract', imageTemplate, module.abstract);
@@ -35,18 +35,18 @@ template('city', imageTemplate, module.city);
 template(
 	'dataUri',
 	[
-		{
-			key: '--width <width>',
+		new Flag({
+			flag: '--width <width>',
 			transform: transformNumber,
-		},
-		{
-			key: '--height <height>',
+		}),
+		new Flag({
+			flag: '--height <height>',
 			transform: transformNumber,
-		},
-		{
-			key: '--color <color>',
-			transform: transformString,
-		},
+		}),
+		new Flag({
+			flag: '--color <color>',
+			transform: identity,
+		}),
 	] as const,
 	module.dataUri,
 );
@@ -60,21 +60,21 @@ template('image', imageTemplate, module.image);
 template(
 	'imageUrl',
 	[
-		{
-			key: '--width <width>',
+		new Flag({
+			flag: '--width <width>',
 			transform: transformInteger,
-		},
-		{
-			key: '--height <height>',
+		}),
+		new Flag({
+			flag: '--height <height>',
 			transform: transformInteger,
-		},
-		{
-			key: '--category <category>',
-			transform: transformString,
-		},
-		{
-			key: '--randomize',
-		},
+		}),
+		new Flag({
+			flag: '--category <category>',
+			transform: identity,
+		}),
+		new BooleanFlag({
+			flag: '--randomize',
+		}),
 	] as const,
 	module.imageUrl,
 );

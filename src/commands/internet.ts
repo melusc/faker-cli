@@ -1,12 +1,7 @@
 import {faker} from '@faker-js/faker';
 
-import {createTemplate} from '../command-template.js';
-import {
-	integerBetween,
-	stringOf,
-	transformInteger,
-	transformString,
-} from '../util.js';
+import {BooleanFlag, Flag, createTemplate} from '../command-template.js';
+import {integerBetween, stringOf, transformInteger, identity} from '../util.js';
 
 const module = faker.internet;
 const template = createTemplate('internet');
@@ -16,18 +11,18 @@ template('avatar', [] as const, module.avatar);
 template(
 	'color',
 	[
-		{
-			key: '--red <int>',
+		new Flag({
+			flag: '--red <int>',
 			transform: integerBetween(0, 255),
-		},
-		{
-			key: '--green <int>',
+		}),
+		new Flag({
+			flag: '--green <int>',
 			transform: integerBetween(0, 255),
-		},
-		{
-			key: '--blue <int>',
+		}),
+		new Flag({
+			flag: '--blue <int>',
 			transform: integerBetween(0, 255),
-		},
+		}),
 	] as const,
 	module.color,
 );
@@ -41,22 +36,22 @@ template('domainWord', [] as const, module.domainWord);
 template(
 	'email',
 	[
+		new Flag({
+			flag: '--first-name <name>',
+			transform: identity,
+		}),
+		new Flag({
+			flag: '--last-name <name>',
+			transform: identity,
+		}),
+		new Flag({
+			flag: '--provider <provider>',
+			transform: identity,
+		}),
 		{
-			key: '--first-name <name>',
-			transform: transformString,
-		},
-		{
-			key: '--last-name <name>',
-			transform: transformString,
-		},
-		{
-			key: '--provider <provider>',
-			transform: transformString,
-		},
-		{
-			allowSpecialCharacters: {
-				key: '--allow-special-characters',
-			},
+			allowSpecialCharacters: new BooleanFlag({
+				flag: '--allow-special-characters',
+			}),
 		},
 	] as const,
 	module.email,
@@ -67,18 +62,18 @@ template('emoji', [] as const, module.emoji);
 template(
 	'exampleEmail',
 	[
+		new Flag({
+			flag: '--first-name <name>',
+			transform: identity,
+		}),
+		new Flag({
+			flag: '--last-name <name>',
+			transform: identity,
+		}),
 		{
-			key: '--first-name <name>',
-			transform: transformString,
-		},
-		{
-			key: '--last-name <name>',
-			transform: transformString,
-		},
-		{
-			allowSpecialCharacters: {
-				key: '--allow-special-characters',
-			},
+			allowSpecialCharacters: new BooleanFlag({
+				flag: '--allow-special-characters',
+			}),
 		},
 	] as const,
 	module.exampleEmail,
@@ -106,8 +101,8 @@ template(
 	'httpStatusCode',
 	[
 		{
-			types: {
-				key: '--types <types>',
+			types: new Flag({
+				flag: '--types <types>',
 				transform(s: string | undefined) {
 					if (s === undefined) {
 						return undefined;
@@ -131,7 +126,7 @@ template(
 					return types;
 				},
 				description: 'Can be one of ' + [...validHttpStatusCodes].join(', '),
-			},
+			}),
 		},
 	] as const,
 	module.httpStatusCode,
@@ -146,10 +141,10 @@ template('ipv6', [] as const, module.ipv6);
 template(
 	'mac',
 	[
-		{
-			key: '--sep <sep>',
+		new Flag({
+			flag: '--sep <sep>',
 			transform: stringOf(new Set(['', ':', '-'] as const)),
-		},
+		}),
 	] as const,
 	module.mac,
 );
@@ -157,15 +152,15 @@ template(
 template(
 	'password',
 	[
-		{
-			key: '--length <length>',
+		new Flag({
+			flag: '--length <length>',
 			transform: transformInteger,
-		},
-		{
-			key: '--memorable',
-		},
-		{
-			key: '--pattern <pattern>',
+		}),
+		new BooleanFlag({
+			flag: '--memorable',
+		}),
+		new Flag({
+			flag: '--pattern <pattern>',
 			transform(s: string | undefined) {
 				if (s === undefined) {
 					return s;
@@ -177,11 +172,11 @@ template(
 					throw new Error(`Invalid regex "${s}"`);
 				}
 			},
-		},
-		{
-			key: '--prefix <prefix>',
-			transform: transformString,
-		},
+		}),
+		new Flag({
+			flag: '--prefix <prefix>',
+			transform: identity,
+		}),
 	] as const,
 	module.password,
 );
@@ -197,14 +192,14 @@ template('userAgent', [] as const, module.userAgent);
 template(
 	'userName',
 	[
-		{
-			key: '--first-name <name>',
-			transform: transformString,
-		},
-		{
-			key: '--last-name <name>',
-			transform: transformString,
-		},
+		new Flag({
+			flag: '--first-name <name>',
+			transform: identity,
+		}),
+		new Flag({
+			flag: '--last-name <name>',
+			transform: identity,
+		}),
 	] as const,
 	module.userName,
 );

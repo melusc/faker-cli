@@ -1,7 +1,7 @@
 import {faker} from '@faker-js/faker';
 
-import {createTemplate} from '../command-template.js';
-import {transformInteger, transformNumber, transformString} from '../util.js';
+import {BooleanFlag, Flag, createTemplate} from '../command-template.js';
+import {transformInteger, transformNumber, identity} from '../util.js';
 
 const module = faker.finance;
 const template = createTemplate('finance');
@@ -9,10 +9,10 @@ const template = createTemplate('finance');
 template(
 	'account',
 	[
-		{
-			key: '--length <length>',
+		new Flag({
+			flag: '--length <length>',
 			transform: transformInteger,
-		},
+		}),
 	] as const,
 	module.account,
 );
@@ -22,25 +22,25 @@ template('accountName', [] as const, module.accountName);
 template(
 	'amount',
 	[
-		{
-			key: '--min <min>',
+		new Flag({
+			flag: '--min <min>',
 			transform: transformNumber,
-		},
-		{
-			key: '--max <max>',
+		}),
+		new Flag({
+			flag: '--max <max>',
 			transform: transformNumber,
-		},
-		{
-			key: '--precision <precision>',
+		}),
+		new Flag({
+			flag: '--precision <precision>',
 			transform: transformInteger,
-		},
-		{
-			key: '--symbol <symbol>',
-			transform: transformString,
-		},
-		{
-			key: '--auto-format',
-		},
+		}),
+		new Flag({
+			flag: '--symbol <symbol>',
+			transform: identity,
+		}),
+		new BooleanFlag({
+			flag: '--auto-format',
+		}),
 	] as const,
 	module.amount,
 );
@@ -49,9 +49,9 @@ template(
 	'bic',
 	[
 		{
-			includeBranchCode: {
-				key: '--include-branch-code',
-			},
+			includeBranchCode: new BooleanFlag({
+				flag: '--include-branch-code',
+			}),
 		},
 	] as const,
 	module.bic,
@@ -66,13 +66,13 @@ template('creditCardIssuer', [] as const, module.creditCardIssuer);
 template(
 	'creditCardNumber',
 	[
-		{
-			key: '--issuer <issuer or format>',
-			transform: transformString,
+		new Flag({
+			flag: '--issuer <issuer or format>',
+			transform: identity,
 			description: `Either an issuer or a format
 --issuer visa => 4882664999007
 --issuer "63[7-9]#-####-####-###L" => '6375-3265-4676-6646`,
-		},
+		}),
 	] as const,
 	module.creditCardNumber,
 );
@@ -88,13 +88,13 @@ template('ethereumAddress', [] as const, module.ethereumAddress);
 template(
 	'iban',
 	[
-		{
-			key: '--formatted',
-		},
-		{
-			key: '--country-code <code>',
-			transform: transformString,
-		},
+		new BooleanFlag({
+			flag: '--formatted',
+		}),
+		new Flag({
+			flag: '--country-code <code>',
+			transform: identity,
+		}),
 	] as const,
 	module.iban,
 );
@@ -104,16 +104,16 @@ template('litecoinAddress', [] as const, module.litecoinAddress);
 template(
 	'mask',
 	[
-		{
-			key: '--length <length>',
+		new Flag({
+			flag: '--length <length>',
 			transform: transformInteger,
-		},
-		{
-			key: '--parens',
-		},
-		{
-			key: '--ellipsis',
-		},
+		}),
+		new BooleanFlag({
+			flag: '--parens',
+		}),
+		new BooleanFlag({
+			flag: '--ellipsis',
+		}),
 	] as const,
 	module.mask,
 );
@@ -121,10 +121,10 @@ template(
 template(
 	'pin',
 	[
-		{
-			key: '--length <length>',
+		new Flag({
+			flag: '--length <length>',
 			transform: transformInteger,
-		},
+		}),
 	] as const,
 	module.pin,
 );
