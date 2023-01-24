@@ -111,7 +111,8 @@ template(
 			flag: '--metric',
 		}),
 	] as const,
-	module.nearbyGPSCoordinate,
+	(coordinates, radius, metric) =>
+		module.nearbyGPSCoordinate([...coordinates], radius, metric),
 	{
 		pre(...args) {
 			const [coordinates] = args;
