@@ -14,7 +14,7 @@
 		"xo": "^0.53.1"
 	},
 	"scripts": {
-		"build:esbuild": "esbuild --packages=external --bundle --outfile=dist/cli.js --format=esm src/index.ts",
+		"build:esbuild": "esbuild --packages=external --bundle --outfile=dist/cli.js --sourcemap --format=esm src/index.ts",
 		"build": "yarn clean && yarn typecheck && yarn build:esbuild",
 		"typecheck": "tsc",
 		"clean": "rimraf dist",
