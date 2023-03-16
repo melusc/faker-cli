@@ -1,6 +1,6 @@
 import {faker} from '@faker-js/faker';
 
-import {createTemplate} from '../command-template.js';
+import {createTemplate} from '../command-template.ts';
 
 const module = faker.database;
 const template = createTemplate('database');

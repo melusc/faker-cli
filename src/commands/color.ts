@@ -1,7 +1,7 @@
 import {faker} from '@faker-js/faker';
 
-import {Flag, createTemplate} from '../command-template.js';
-import {stringOf} from '../util.js';
+import {Flag, createTemplate} from '../command-template.ts';
+import {stringOf} from '../util.ts';
 
 const module = faker.color;
 const template = createTemplate('color');

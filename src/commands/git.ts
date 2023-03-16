@@ -1,7 +1,7 @@
 import {faker} from '@faker-js/faker';
 
-import {BooleanFlag, Flag, createTemplate} from '../command-template.js';
-import {stringOf} from '../util.js';
+import {BooleanFlag, Flag, createTemplate} from '../command-template.ts';
+import {stringOf} from '../util.ts';
 
 const module = faker.git;
 const template = createTemplate('git');

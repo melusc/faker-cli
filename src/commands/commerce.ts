@@ -1,7 +1,7 @@
 import {faker} from '@faker-js/faker';
 
-import {Flag, createTemplate} from '../command-template.js';
-import {transformInteger, transformNumber, identity} from '../util.js';
+import {Flag, createTemplate} from '../command-template.ts';
+import {transformInteger, transformNumber, identity} from '../util.ts';
 
 const module = faker.commerce;
 const template = createTemplate('commerce');
