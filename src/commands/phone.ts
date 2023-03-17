@@ -1,7 +1,7 @@
 import {faker} from '@faker-js/faker';
 
-import {Flag, createTemplate} from '../command-template.js';
-import {identity} from '../util.js';
+import {Flag, createTemplate} from '../command-template.ts';
+import {identity} from '../util.ts';
 
 const module = faker.phone;
 const template = createTemplate('phone');

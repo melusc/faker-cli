@@ -1,12 +1,12 @@
 import {faker} from '@faker-js/faker';
 
-import {BooleanFlag, Flag, createTemplate} from '../command-template.js';
+import {BooleanFlag, Flag, createTemplate} from '../command-template.ts';
 import {
 	stringOf,
 	transformInteger,
 	transformNumber,
 	identity,
-} from '../util.js';
+} from '../util.ts';
 
 const module = faker.address;
 const template = createTemplate('address');

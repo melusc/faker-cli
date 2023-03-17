@@ -1,6 +1,13 @@
 {
 	"rules": {
 		"@typescript-eslint/indent": "off",
-		"no-mixed-spaces-and-tabs": "off"
+		"no-mixed-spaces-and-tabs": "off",
+		"n/file-extension-in-import": [
+			"error",
+			"always",
+			{
+				".ts": "always"
+			}
+		]
 	}
 }

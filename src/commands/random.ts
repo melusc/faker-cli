@@ -1,7 +1,7 @@
 import {faker} from '@faker-js/faker';
 
-import {BooleanFlag, Flag, createTemplate} from '../command-template.js';
-import {stringOf, transformInteger} from '../util.js';
+import {BooleanFlag, Flag, createTemplate} from '../command-template.ts';
+import {stringOf, transformInteger} from '../util.ts';
 
 const module = faker.random;
 const template = createTemplate('random');

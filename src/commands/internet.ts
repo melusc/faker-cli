@@ -1,7 +1,7 @@
 import {faker} from '@faker-js/faker';
 
-import {BooleanFlag, Flag, createTemplate} from '../command-template.js';
-import {integerBetween, stringOf, transformInteger, identity} from '../util.js';
+import {BooleanFlag, Flag, createTemplate} from '../command-template.ts';
+import {integerBetween, stringOf, transformInteger, identity} from '../util.ts';
 
 const module = faker.internet;
 const template = createTemplate('internet');

@@ -3,27 +3,27 @@ import {exit} from 'node:process';
 
 import {program} from 'commander';
 
-import './commands/address.js';
-import './commands/animal.js';
-import './commands/color.js';
-import './commands/commerce.js';
-import './commands/company.js';
-import './commands/database.js';
-import './commands/datatype.js';
-import './commands/date.js';
-import './commands/finance.js';
-import './commands/git.js';
-import './commands/hacker.js';
-import './commands/image.js';
-import './commands/internet.js';
-import './commands/lorem.js';
-import './commands/name.js';
-import './commands/music.js';
-import './commands/phone.js';
-import './commands/random.js';
-import './commands/science.js';
-import './commands/system.js';
-import './commands/vehicle.js';
+import './commands/address.ts';
+import './commands/animal.ts';
+import './commands/color.ts';
+import './commands/commerce.ts';
+import './commands/company.ts';
+import './commands/database.ts';
+import './commands/datatype.ts';
+import './commands/date.ts';
+import './commands/finance.ts';
+import './commands/git.ts';
+import './commands/hacker.ts';
+import './commands/image.ts';
+import './commands/internet.ts';
+import './commands/lorem.ts';
+import './commands/name.ts';
+import './commands/music.ts';
+import './commands/phone.ts';
+import './commands/random.ts';
+import './commands/science.ts';
+import './commands/system.ts';
+import './commands/vehicle.ts';
 
 program
 	.name('faker')

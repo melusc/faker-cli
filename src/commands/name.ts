@@ -1,7 +1,7 @@
 import {faker} from '@faker-js/faker';
 
-import {Flag, createTemplate} from '../command-template.js';
-import {transformSexType, identity} from '../util.js';
+import {Flag, createTemplate} from '../command-template.ts';
+import {transformSexType, identity} from '../util.ts';
 
 const module = faker.name;
 const template = createTemplate('name');

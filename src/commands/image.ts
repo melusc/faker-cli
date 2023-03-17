@@ -1,7 +1,7 @@
 import {faker} from '@faker-js/faker';
 
-import {BooleanFlag, Flag, createTemplate} from '../command-template.js';
-import {transformInteger, transformNumber, identity} from '../util.js';
+import {BooleanFlag, Flag, createTemplate} from '../command-template.ts';
+import {transformInteger, transformNumber, identity} from '../util.ts';
 
 const module = faker.image;
 const template = createTemplate('image');

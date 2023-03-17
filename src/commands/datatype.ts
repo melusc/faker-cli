@@ -1,13 +1,13 @@
 import {faker} from '@faker-js/faker';
 
-import {Flag, createTemplate} from '../command-template.js';
+import {Flag, createTemplate} from '../command-template.ts';
 import {
 	matchRegex,
 	stringOf,
 	transformInteger,
 	transformNumber,
 	identity,
-} from '../util.js';
+} from '../util.ts';
 
 const module = faker.datatype;
 const template = createTemplate('datatype');
