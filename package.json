@@ -4,12 +4,12 @@
 	"type": "module",
 	"packageManager": "yarn@3.5.0",
 	"devDependencies": {
-		"@lusc/tsconfig": "^2.1.0",
-		"@types/node": "^18.15.3",
-		"esbuild": "^0.17.11",
-		"prettier": "^2.8.4",
-		"rimraf": "^4.4.0",
-		"type-fest": "^3.6.1",
+		"@lusc/tsconfig": "^2.2.0",
+		"@types/node": "^18.15.6",
+		"esbuild": "^0.17.12",
+		"prettier": "^2.8.6",
+		"rimraf": "^4.4.1",
+		"type-fest": "^3.7.0",
 		"typescript": "^5.0.2",
 		"xo": "^0.53.1"
 	},
