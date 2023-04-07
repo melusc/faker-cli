@@ -126,7 +126,7 @@ template(
 				return args;
 			}
 
-			if (coordinates?.includes(undefined as any)) {
+			if (coordinates?.some(n => n === undefined)) {
 				throw new Error(
 					`Expected coordinates to either all be undefined or a number, got [${coordinates
 						.map(t => t ?? 'undefined')
