@@ -1,4 +1,4 @@
-import {faker} from '@faker-js/faker';
+import {faker, type UsableLocale} from '@faker-js/faker';
 import camelCase from 'camelcase';
 import {program, type Command} from 'commander';
 
@@ -282,7 +282,7 @@ export function createTemplate(name: string | string[]): TemplateFunction {
 		}
 
 		subSubProgram.action(() => {
-			faker.setLocale(program.getOptionValue('locale'));
+			faker.setLocale(program.getOptionValue('locale') as UsableLocale);
 
 			let args = fill(template, subSubProgram);
 
