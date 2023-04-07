@@ -8,6 +8,13 @@
 			{
 				".ts": "always"
 			}
+		],
+		"import/order": [
+			"error",
+			{
+				"newlines-between": "always",
+				"warnOnUnassignedImports": true
+			}
 		]
 	}
 }
