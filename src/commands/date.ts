@@ -7,26 +7,43 @@ const module = faker.date;
 const template = createTemplate('date');
 
 function transformDate(s: string): string | number {
-	if (/^\d+$/.test(s)) {
+	if (/^-?\d+$/.test(s)) {
 		return Number(s);
 	}
 
 	return s;
 }
 
+const refDateFlag = new Flag({
+	flag: '--ref-date <date>',
+	transform: transformDate,
+});
+
+template(
+	'anytime',
+	[
+		{
+			refDate: refDateFlag,
+		},
+	] as const,
+	module.anytime,
+);
+
 template(
 	'between',
 	[
-		new Flag({
-			flag: '--from <from>',
-			transform: transformDate,
-			required: true,
-		}),
-		new Flag({
-			flag: '--to <to>',
-			transform: transformDate,
-			required: true,
-		}),
+		{
+			from: new Flag({
+				flag: '--from <from>',
+				transform: transformDate,
+				required: true,
+			}),
+			to: new Flag({
+				flag: '--to <to>',
+				transform: transformDate,
+				required: true,
+			}),
+		},
 	] as const,
 	module.between,
 );
@@ -34,20 +51,22 @@ template(
 template(
 	'betweens',
 	[
-		new Flag({
-			flag: '--from <from>',
-			transform: transformDate,
-			required: true,
-		}),
-		new Flag({
-			flag: '--to <to>',
-			transform: transformDate,
-			required: true,
-		}),
-		new Flag({
-			flag: '--amount <amount>',
-			transform: transformInteger,
-		}),
+		{
+			from: new Flag({
+				flag: '--from <from>',
+				transform: transformDate,
+				required: true,
+			}),
+			to: new Flag({
+				flag: '--to <to>',
+				transform: transformDate,
+				required: true,
+			}),
+			count: new Flag({
+				flag: '--count <count>',
+				transform: transformInteger,
+			}),
+		},
 	] as const,
 	module.betweens,
 );
@@ -68,10 +87,7 @@ template(
 				flag: '--mode <mode>',
 				transform: stringOf(new Set(['age', 'year'] as const)),
 			}),
-			refDate: new Flag({
-				flag: '--ref-date <date>',
-				transform: transformDate,
-			}),
+			refDate: refDateFlag,
 		},
 	] as const,
 	module.birthdate,
@@ -80,14 +96,13 @@ template(
 template(
 	'future',
 	[
-		new Flag({
-			flag: '--years <years>',
-			transform: transformNumber,
-		}),
-		new Flag({
-			flag: '--ref-date <date>',
-			transform: transformDate,
-		}),
+		{
+			years: new Flag({
+				flag: '--years <years>',
+				transform: transformNumber,
+			}),
+			refDate: refDateFlag,
+		},
 	] as const,
 	module.future,
 );
@@ -96,8 +111,8 @@ template(
 	'month',
 	[
 		{
-			abbr: new BooleanFlag({
-				flag: '--abbreviate',
+			abbreviated: new BooleanFlag({
+				flag: '--abbreviated',
 			}),
 			context: new BooleanFlag({
 				flag: '--context',
@@ -110,14 +125,13 @@ template(
 template(
 	'past',
 	[
-		new Flag({
-			flag: '--years <years>',
-			transform: transformNumber,
-		}),
-		new Flag({
-			flag: '--ref-date <date>',
-			transform: transformDate,
-		}),
+		{
+			years: new Flag({
+				flag: '--years <years>',
+				transform: transformNumber,
+			}),
+			refDate: refDateFlag,
+		},
 	] as const,
 	module.past,
 );
@@ -125,14 +139,13 @@ template(
 template(
 	'recent',
 	[
-		new Flag({
-			flag: '--days <days>',
-			transform: transformNumber,
-		}),
-		new Flag({
-			flag: '--ref-date <date>',
-			transform: transformDate,
-		}),
+		{
+			days: new Flag({
+				flag: '--days <days>',
+				transform: transformNumber,
+			}),
+			refDate: refDateFlag,
+		},
 	] as const,
 	module.recent,
 );
@@ -140,14 +153,13 @@ template(
 template(
 	'soon',
 	[
-		new Flag({
-			flag: '--days <days>',
-			transform: transformNumber,
-		}),
-		new Flag({
-			flag: '--ref-date <date>',
-			transform: transformDate,
-		}),
+		{
+			days: new Flag({
+				flag: '--days <days>',
+				transform: transformNumber,
+			}),
+			refDate: refDateFlag,
+		},
 	] as const,
 	module.soon,
 );
@@ -156,8 +168,8 @@ template(
 	'weekday',
 	[
 		{
-			abbr: new BooleanFlag({
-				flag: '--abbreviate',
+			abbreviated: new BooleanFlag({
+				flag: '--abbreviated',
 			}),
 			context: new BooleanFlag({
 				flag: '--context',
