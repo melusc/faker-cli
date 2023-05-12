@@ -68,13 +68,19 @@ export function identity<T>(s: T): T {
 	return s;
 }
 
-export function stringOf<T extends string>(set: Set<T>): (s: string) => T {
+export function stringOf<T extends string>(
+	set: readonly T[] | ReadonlySet<T>,
+): (s: string) => T {
+	const asSet = new Set(set);
+
 	return (s: string) => {
-		if (set.has(s as T)) {
+		if (asSet.has(s as T)) {
 			return s as T;
 		}
 
-		throw new Error(`Expected "${s}" to be one of ${JSON.stringify([...set])}`);
+		throw new Error(
+			`Expected "${s}" to be one of ${JSON.stringify([...asSet])}`,
+		);
 	};
 }
 
@@ -86,4 +92,31 @@ export function matchRegex(regex: RegExp): (s: string) => string {
 
 		return s;
 	};
+}
+
+export function arrayOf<T>(
+	transform: (s: string) => T,
+): (s: string) => readonly T[] {
+	return (s: string): readonly T[] => {
+		const split = s
+			.split(',')
+			.map(s => s.trim())
+			.filter(Boolean);
+
+		const result: T[] = [];
+
+		for (const item of split) {
+			result.push(transform(item));
+		}
+
+		return result;
+	};
+}
+
+export function transformRegex(s: string) {
+	try {
+		return new RegExp(s);
+	} catch {
+		throw new Error(`Invalid regex "${s}"`);
+	}
 }
