@@ -20,6 +20,7 @@ import './commands/location.ts';
 import './commands/lorem.ts';
 import './commands/music.ts';
 import './commands/name.ts';
+import './commands/number.ts';
 import './commands/phone.ts';
 import './commands/random.ts';
 import './commands/science.ts';
