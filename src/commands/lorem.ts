@@ -86,49 +86,32 @@ template(
 	'word',
 	[
 		{
-			length: {
-				min: new Flag({
-					flag: '--min <min>',
-					transform: transformInteger,
-				}),
-				max: new Flag({
-					flag: '--max <max>',
-					transform: transformInteger,
-				}),
-			},
+			length: new Flag({
+				flag: '--length <length>',
+				transform: transformInteger,
+			}),
 			strategy: new Flag({
 				flag: '--strategy <strategy>',
 				transform: stringOf(
 					new Set([
-						'fail',
-						'closest',
-						'shortest',
-						'longest',
 						'any-length',
+						'closest',
+						'fail',
+						'longest',
+						'shortest',
 					] as const),
 				),
 			}),
 		},
 	] as const,
 	module.word,
-	{
-		pre(...args) {
-			const min = args[0]?.length?.min;
-			const max = args[0]?.length?.max;
-			if ((min === undefined) !== (max === undefined)) {
-				throw new Error('max and min should both be undefined or both defined');
-			}
-
-			return args;
-		},
-	},
 );
 
 template(
 	'words',
 	[
 		new Flag({
-			flag: '--amount <amount>',
+			flag: '--word-count <amount>',
 			transform: transformInteger,
 		}),
 	] as const,
