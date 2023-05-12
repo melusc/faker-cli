@@ -3,15 +3,17 @@ import {faker} from '@faker-js/faker';
 import {Flag, createTemplate} from '../command-template.ts';
 import {transformSexType, identity} from '../util.ts';
 
-const module = faker.name;
-const template = createTemplate('name');
+const module = faker.person;
+const template = createTemplate('person');
+
+template('bio', [] as const, module.bio);
 
 template(
 	['firstName', 'first'],
 	[
 		new Flag({
-			transform: transformSexType,
 			flag: '--sex <sex>',
+			transform: transformSexType,
 		}),
 	] as const,
 	module.firstName,
@@ -52,8 +54,8 @@ template(
 	['lastName', 'last'],
 	[
 		new Flag({
-			transform: transformSexType,
 			flag: '--sex <sex>',
+			transform: transformSexType,
 		}),
 	] as const,
 	module.lastName,
@@ -63,8 +65,8 @@ template(
 	['middleName', 'middle'],
 	[
 		new Flag({
-			transform: transformSexType,
 			flag: '--sex <sex>',
+			transform: transformSexType,
 		}),
 	] as const,
 	module.middleName,
@@ -86,3 +88,5 @@ template('sex', [] as const, module.sex);
 template('sexType', [] as const, module.sexType);
 
 template('suffix', [] as const, module.suffix);
+
+template('zodiacSign', [] as const, module.zodiacSign);
