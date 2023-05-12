@@ -5,13 +5,13 @@ import {createTemplate} from '../command-template.ts';
 const module = faker.company;
 const template = createTemplate('company');
 
-template('bs', [] as const, module.bs);
+template('buzzAdjective', [] as const, module.buzzAdjective);
 
-template('bsAdjective', [] as const, module.bsAdjective);
+template('buzzNoun', [] as const, module.buzzNoun);
 
-template('bsBuzz', [] as const, module.bsBuzz);
+template('buzzPhrase', [] as const, module.buzzPhrase);
 
-template('bsNoun', [] as const, module.bsNoun);
+template('buzzVerb', [] as const, module.buzzVerb);
 
 template('catchPhrase', [] as const, module.catchPhrase);
 
@@ -21,8 +21,4 @@ template('catchPhraseDescriptor', [] as const, module.catchPhraseDescriptor);
 
 template('catchPhraseNoun', [] as const, module.catchPhraseNoun);
 
-template('companySuffix', [] as const, module.companySuffix);
-
 template('name', [] as const, module.name);
-
-template('suffixes', [] as const, module.suffixes);
