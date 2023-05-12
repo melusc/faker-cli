@@ -1,28 +1,21 @@
-import {faker} from '@faker-js/faker';
-
 import {createTemplate} from '../command-template.ts';
 
-const module = faker.company;
 const template = createTemplate('company');
 
-template('bs', [] as const, module.bs);
+template('buzzAdjective', [] as const);
 
-template('bsAdjective', [] as const, module.bsAdjective);
+template('buzzNoun', [] as const);
 
-template('bsBuzz', [] as const, module.bsBuzz);
+template('buzzPhrase', [] as const);
 
-template('bsNoun', [] as const, module.bsNoun);
+template('buzzVerb', [] as const);
 
-template('catchPhrase', [] as const, module.catchPhrase);
+template('catchPhrase', [] as const);
 
-template('catchPhraseAdjective', [] as const, module.catchPhraseAdjective);
+template('catchPhraseAdjective', [] as const);
 
-template('catchPhraseDescriptor', [] as const, module.catchPhraseDescriptor);
+template('catchPhraseDescriptor', [] as const);
 
-template('catchPhraseNoun', [] as const, module.catchPhraseNoun);
+template('catchPhraseNoun', [] as const);
 
-template('companySuffix', [] as const, module.companySuffix);
-
-template('name', [] as const, module.name);
-
-template('suffixes', [] as const, module.suffixes);
+template('name', [] as const);

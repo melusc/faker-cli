@@ -3,7 +3,6 @@ import {exit} from 'node:process';
 
 import {program} from 'commander';
 
-import './commands/address.ts';
 import './commands/animal.ts';
 import './commands/color.ts';
 import './commands/commerce.ts';
@@ -14,13 +13,15 @@ import './commands/date.ts';
 import './commands/finance.ts';
 import './commands/git.ts';
 import './commands/hacker.ts';
+import './commands/helpers.ts';
 import './commands/image.ts';
 import './commands/internet.ts';
+import './commands/location.ts';
 import './commands/lorem.ts';
-import './commands/name.ts';
 import './commands/music.ts';
+import './commands/number.ts';
+import './commands/person.ts';
 import './commands/phone.ts';
-import './commands/random.ts';
 import './commands/science.ts';
 import './commands/system.ts';
 import './commands/vehicle.ts';

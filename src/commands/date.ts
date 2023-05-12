@@ -1,168 +1,134 @@
-import {faker} from '@faker-js/faker';
-
 import {BooleanFlag, Flag, createTemplate} from '../command-template.ts';
-import {stringOf, transformInteger, transformNumber} from '../util.ts';
+import {
+	stringOf,
+	transformDate,
+	transformInteger,
+	transformNumber,
+} from '../util.ts';
 
-const module = faker.date;
 const template = createTemplate('date');
 
-function transformDate(s: string): string | number {
-	if (/^\d+$/.test(s)) {
-		return Number(s);
-	}
+const refDateFlag = new Flag({
+	flag: '--ref-date <date>',
+	transform: transformDate,
+});
 
-	return s;
-}
+template('anytime', [
+	{
+		refDate: refDateFlag,
+	},
+] as const);
 
-template(
-	'between',
-	[
-		new Flag({
+template('between', [
+	{
+		from: new Flag({
 			flag: '--from <from>',
 			transform: transformDate,
 			required: true,
 		}),
-		new Flag({
+		to: new Flag({
 			flag: '--to <to>',
 			transform: transformDate,
 			required: true,
 		}),
-	] as const,
-	module.between,
-);
+	},
+] as const);
 
-template(
-	'betweens',
-	[
-		new Flag({
+template('betweens', [
+	{
+		from: new Flag({
 			flag: '--from <from>',
 			transform: transformDate,
 			required: true,
 		}),
-		new Flag({
+		to: new Flag({
 			flag: '--to <to>',
 			transform: transformDate,
 			required: true,
 		}),
-		new Flag({
-			flag: '--amount <amount>',
+		count: new Flag({
+			flag: '--count <count>',
 			transform: transformInteger,
 		}),
-	] as const,
-	module.betweens,
-);
+	},
+] as const);
 
-template(
-	'birthdate',
-	[
-		{
-			min: new Flag({
-				flag: '--min <min>',
-				transform: transformInteger,
-			}),
-			max: new Flag({
-				flag: '--max <max>',
-				transform: transformInteger,
-			}),
-			mode: new Flag({
-				flag: '--mode <mode>',
-				transform: stringOf(new Set(['age', 'year'] as const)),
-			}),
-			refDate: new Flag({
-				flag: '--ref-date <date>',
-				transform: transformDate,
-			}),
-		},
-	] as const,
-	module.birthdate,
-);
+template('birthdate', [
+	{
+		min: new Flag({
+			flag: '--min <min>',
+			transform: transformInteger,
+		}),
+		max: new Flag({
+			flag: '--max <max>',
+			transform: transformInteger,
+		}),
+		mode: new Flag({
+			flag: '--mode <mode>',
+			transform: stringOf(new Set(['age', 'year'] as const)),
+		}),
+		refDate: refDateFlag,
+	},
+] as const);
 
-template(
-	'future',
-	[
-		new Flag({
+template('future', [
+	{
+		years: new Flag({
 			flag: '--years <years>',
 			transform: transformNumber,
 		}),
-		new Flag({
-			flag: '--ref-date <date>',
-			transform: transformDate,
+		refDate: refDateFlag,
+	},
+] as const);
+
+template('month', [
+	{
+		abbreviated: new BooleanFlag({
+			flag: '--abbreviated',
 		}),
-	] as const,
-	module.future,
-);
+		context: new BooleanFlag({
+			flag: '--context',
+		}),
+	},
+] as const);
 
-template(
-	'month',
-	[
-		{
-			abbr: new BooleanFlag({
-				flag: '--abbreviate',
-			}),
-			context: new BooleanFlag({
-				flag: '--context',
-			}),
-		},
-	] as const,
-	module.month,
-);
-
-template(
-	'past',
-	[
-		new Flag({
+template('past', [
+	{
+		years: new Flag({
 			flag: '--years <years>',
 			transform: transformNumber,
 		}),
-		new Flag({
-			flag: '--ref-date <date>',
-			transform: transformDate,
-		}),
-	] as const,
-	module.past,
-);
+		refDate: refDateFlag,
+	},
+] as const);
 
-template(
-	'recent',
-	[
-		new Flag({
+template('recent', [
+	{
+		days: new Flag({
 			flag: '--days <days>',
 			transform: transformNumber,
 		}),
-		new Flag({
-			flag: '--ref-date <date>',
-			transform: transformDate,
-		}),
-	] as const,
-	module.recent,
-);
+		refDate: refDateFlag,
+	},
+] as const);
 
-template(
-	'soon',
-	[
-		new Flag({
+template('soon', [
+	{
+		days: new Flag({
 			flag: '--days <days>',
 			transform: transformNumber,
 		}),
-		new Flag({
-			flag: '--ref-date <date>',
-			transform: transformDate,
-		}),
-	] as const,
-	module.soon,
-);
+		refDate: refDateFlag,
+	},
+] as const);
 
-template(
-	'weekday',
-	[
-		{
-			abbr: new BooleanFlag({
-				flag: '--abbreviate',
-			}),
-			context: new BooleanFlag({
-				flag: '--context',
-			}),
-		},
-	] as const,
-	module.weekday,
-);
+template('weekday', [
+	{
+		abbreviated: new BooleanFlag({
+			flag: '--abbreviated',
+		}),
+		context: new BooleanFlag({
+			flag: '--context',
+		}),
+	},
+] as const);

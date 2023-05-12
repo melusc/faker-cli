@@ -1,24 +1,21 @@
-import {faker} from '@faker-js/faker';
-
 import {createTemplate} from '../command-template.ts';
 
-const module = faker.vehicle;
 const template = createTemplate('vehicle');
 
-template('bicycle', [] as const, module.bicycle);
+template('bicycle', [] as const);
 
-template('color', [] as const, module.color);
+template('color', [] as const);
 
-template('fuel', [] as const, module.fuel);
+template('fuel', [] as const);
 
-template('manufacturer', [] as const, module.manufacturer);
+template('manufacturer', [] as const);
 
-template('model', [] as const, module.model);
+template('model', [] as const);
 
-template('type', [] as const, module.type);
+template('type', [] as const);
 
-template('vehicle', [] as const, module.vehicle);
+template('vehicle', [] as const);
 
-template('vin', [] as const, module.vin);
+template('vin', [] as const);
 
-template('vrm', [] as const, module.vrm);
+template('vrm', [] as const);
