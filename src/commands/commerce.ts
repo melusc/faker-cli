@@ -11,22 +11,24 @@ template('department', [] as const, module.department);
 template(
 	'price',
 	[
-		new Flag({
-			flag: '--min <min>',
-			transform: transformNumber,
-		}),
-		new Flag({
-			flag: '--max <max>',
-			transform: transformNumber,
-		}),
-		new Flag({
-			flag: '--precision <precision>',
-			transform: transformInteger,
-		}),
-		new Flag({
-			flag: '--symbol <symbol>',
-			transform: identity,
-		}),
+		{
+			min: new Flag({
+				flag: '--min <min>',
+				transform: transformNumber,
+			}),
+			max: new Flag({
+				flag: '--max <max>',
+				transform: transformNumber,
+			}),
+			dec: new Flag({
+				flag: '--dec <decimal places>',
+				transform: transformInteger,
+			}),
+			symbol: new Flag({
+				flag: '--symbol <symbol>',
+				transform: identity,
+			}),
+		},
 	] as const,
 	module.price,
 );
