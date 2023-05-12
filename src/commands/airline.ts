@@ -18,16 +18,10 @@ template(
 	'flightNumber',
 	[
 		{
-			length: {
-				min: new Flag({
-					flag: '--min <length>',
-					transform: transformInteger,
-				}),
-				max: new Flag({
-					flag: '--max <length>',
-					transform: transformInteger,
-				}),
-			},
+			length: new Flag({
+				flag: '--length <length>',
+				transform: transformInteger,
+			}),
 			addLeadingZeros: new BooleanFlag({
 				flag: '--add-leading-zeros',
 			}),
