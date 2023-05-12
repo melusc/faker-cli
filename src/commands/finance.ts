@@ -6,18 +6,20 @@ import {transformInteger, transformNumber, identity} from '../util.ts';
 const module = faker.finance;
 const template = createTemplate('finance');
 
-template(
-	'account',
-	[
-		new Flag({
-			flag: '--length <length>',
-			transform: transformInteger,
-		}),
-	] as const,
-	module.account,
-);
-
 template('accountName', [] as const, module.accountName);
+
+template(
+	'accountNumber',
+	[
+		{
+			length: new Flag({
+				flag: '--length <length>',
+				transform: transformInteger,
+			}),
+		},
+	] as const,
+	module.accountNumber,
+);
 
 template(
 	'amount',
@@ -31,7 +33,7 @@ template(
 			transform: transformNumber,
 		}),
 		new Flag({
-			flag: '--precision <precision>',
+			flag: '--dec <decimal plcaes>',
 			transform: transformInteger,
 		}),
 		new Flag({
@@ -77,6 +79,8 @@ template(
 	module.creditCardNumber,
 );
 
+template('currency', [] as const, module.currency);
+
 template('currencyCode', [] as const, module.currencyCode);
 
 template('currencyName', [] as const, module.currencyName);
@@ -102,29 +106,33 @@ template(
 template('litecoinAddress', [] as const, module.litecoinAddress);
 
 template(
-	'mask',
+	'maskedNumber',
 	[
-		new Flag({
-			flag: '--length <length>',
-			transform: transformInteger,
-		}),
-		new BooleanFlag({
-			flag: '--parens',
-		}),
-		new BooleanFlag({
-			flag: '--ellipsis',
-		}),
+		{
+			length: new Flag({
+				flag: '--length <length>',
+				transform: transformInteger,
+			}),
+			parens: new BooleanFlag({
+				flag: '--parens',
+			}),
+			ellipsis: new BooleanFlag({
+				flag: '--ellipsis',
+			}),
+		},
 	] as const,
-	module.mask,
+	module.maskedNumber,
 );
 
 template(
 	'pin',
 	[
-		new Flag({
-			flag: '--length <length>',
-			transform: transformInteger,
-		}),
+		{
+			length: new Flag({
+				flag: '--length <length>',
+				transform: transformInteger,
+			}),
+		},
 	] as const,
 	module.pin,
 );
