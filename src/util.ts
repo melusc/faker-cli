@@ -96,10 +96,11 @@ export function matchRegex(regex: RegExp): (s: string) => string {
 
 export function arrayOf<T>(
 	transform: (s: string) => T,
+	separator = ',',
 ): (s: string) => readonly T[] {
 	return (s: string): readonly T[] => {
 		const split = s
-			.split(',')
+			.split(separator)
 			.map(s => s.trim())
 			.filter(Boolean);
 
