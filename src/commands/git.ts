@@ -1,5 +1,3 @@
-import {faker} from '@faker-js/faker';
-
 import {BooleanFlag, Flag, createTemplate} from '../command-template.ts';
 import {stringOf, transformDate, transformInteger} from '../util.ts';
 
@@ -8,49 +6,36 @@ const refDateFlag = new Flag({
 	transform: transformDate,
 });
 
-const module = faker.git;
 const template = createTemplate('git');
 
-template('branch', [] as const, module.branch);
+template('branch', [] as const);
 
-template(
-	'commitDate',
-	[
-		{
-			refDate: refDateFlag,
-		},
-	] as const,
-	module.commitDate,
-);
+template('commitDate', [
+	{
+		refDate: refDateFlag,
+	},
+] as const);
 
-template(
-	'commitEntry',
-	[
-		{
-			eol: new Flag({
-				flag: '--eol <eol>',
-				transform: stringOf(new Set(['LF', 'CRLF'] as const)),
-			}),
-			merge: new BooleanFlag({
-				flag: '--merge',
-			}),
-			refDate: refDateFlag,
-		},
-	] as const,
-	module.commitEntry,
-);
+template('commitEntry', [
+	{
+		eol: new Flag({
+			flag: '--eol <eol>',
+			transform: stringOf(new Set(['LF', 'CRLF'] as const)),
+		}),
+		merge: new BooleanFlag({
+			flag: '--merge',
+		}),
+		refDate: refDateFlag,
+	},
+] as const);
 
-template('commitMessage', [] as const, module.commitMessage);
+template('commitMessage', [] as const);
 
-template(
-	'commitSha',
-	[
-		{
-			length: new Flag({
-				flag: '--length <length>',
-				transform: transformInteger,
-			}),
-		},
-	] as const,
-	module.commitSha,
-);
+template('commitSha', [
+	{
+		length: new Flag({
+			flag: '--length <length>',
+			transform: transformInteger,
+		}),
+	},
+] as const);

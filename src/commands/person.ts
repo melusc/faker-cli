@@ -1,92 +1,69 @@
-import {faker} from '@faker-js/faker';
-
 import {Flag, createTemplate} from '../command-template.ts';
 import {transformSexType, identity} from '../util.ts';
 
-const module = faker.person;
 const template = createTemplate('person');
 
-template('bio', [] as const, module.bio);
+template('bio', [] as const);
 
-template(
-	['firstName', 'first'],
-	[
-		new Flag({
-			flag: '--sex <sex>',
-			transform: transformSexType,
+template('firstName', [
+	new Flag({
+		flag: '--sex <sex>',
+		transform: transformSexType,
+	}),
+] as const);
+
+template('fullName', [
+	{
+		firstName: new Flag({
+			transform: identity,
+			flag: '--first-name <name>',
 		}),
-	] as const,
-	module.firstName,
-);
-
-template(
-	['fullName', 'full'],
-	[
-		{
-			firstName: new Flag({
-				transform: identity,
-				flag: '--first-name <name>',
-			}),
-			lastName: new Flag({
-				transform: identity,
-				flag: '--last-name <name>',
-			}),
-			sex: new Flag({
-				transform: transformSexType,
-				flag: '--sex <sex>',
-			}),
-		},
-	] as const,
-	module.fullName,
-);
-
-template('gender', [] as const, module.gender);
-
-template('jobArea', [] as const, module.jobArea);
-
-template('jobDescriptor', [] as const, module.jobDescriptor);
-
-template('jobTitle', [] as const, module.jobTitle);
-
-template('jobType', [] as const, module.jobType);
-
-template(
-	['lastName', 'last'],
-	[
-		new Flag({
-			flag: '--sex <sex>',
-			transform: transformSexType,
+		lastName: new Flag({
+			transform: identity,
+			flag: '--last-name <name>',
 		}),
-	] as const,
-	module.lastName,
-);
-
-template(
-	['middleName', 'middle'],
-	[
-		new Flag({
-			flag: '--sex <sex>',
-			transform: transformSexType,
-		}),
-	] as const,
-	module.middleName,
-);
-
-template(
-	'prefix',
-	[
-		new Flag({
+		sex: new Flag({
 			transform: transformSexType,
 			flag: '--sex <sex>',
 		}),
-	] as const,
-	module.prefix,
-);
+	},
+] as const);
 
-template('sex', [] as const, module.sex);
+template('gender', [] as const);
 
-template('sexType', [] as const, module.sexType);
+template('jobArea', [] as const);
 
-template('suffix', [] as const, module.suffix);
+template('jobDescriptor', [] as const);
 
-template('zodiacSign', [] as const, module.zodiacSign);
+template('jobTitle', [] as const);
+
+template('jobType', [] as const);
+
+template('lastName', [
+	new Flag({
+		flag: '--sex <sex>',
+		transform: transformSexType,
+	}),
+] as const);
+
+template('middleName', [
+	new Flag({
+		flag: '--sex <sex>',
+		transform: transformSexType,
+	}),
+] as const);
+
+template('prefix', [
+	new Flag({
+		transform: transformSexType,
+		flag: '--sex <sex>',
+	}),
+] as const);
+
+template('sex', [] as const);
+
+template('sexType', [] as const);
+
+template('suffix', [] as const);
+
+template('zodiacSign', [] as const);

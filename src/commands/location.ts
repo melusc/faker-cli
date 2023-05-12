@@ -1,102 +1,79 @@
-import {faker} from '@faker-js/faker';
-
 import {BooleanFlag, Flag, createTemplate} from '../command-template.ts';
 import {
+	identity,
 	stringOf,
 	transformInteger,
 	transformNumber,
-	identity,
 } from '../util.ts';
 
-const module = faker.location;
 const template = createTemplate('location');
 
-template('buildingNumber', [] as const, module.buildingNumber);
+template('buildingNumber', [] as const);
 
-template(
-	'cardinalDirection',
-	[
-		{
-			abbreviated: new BooleanFlag({
-				flag: '--abbreviated',
-			}),
-		},
-	] as const,
-	module.cardinalDirection,
-);
+template('cardinalDirection', [
+	{
+		abbreviated: new BooleanFlag({
+			flag: '--abbreviated',
+		}),
+	},
+] as const);
 
-template('city', [] as const, module.city);
+template('city', [] as const);
 
-template('country', [] as const, module.country);
+template('country', [] as const);
 
-template(
-	'countryCode',
-	[
-		{
-			variant: new Flag({
-				flag: '--variant <code>',
-				transform: stringOf(['alpha-2', 'alpha-3'] as const),
-			}),
-		},
-	] as const,
-	module.countryCode,
-);
+template('countryCode', [
+	{
+		variant: new Flag({
+			flag: '--variant <code>',
+			transform: stringOf(['alpha-2', 'alpha-3'] as const),
+		}),
+	},
+] as const);
 
-template('county', [] as const, module.county);
+template('county', [] as const);
 
-template(
-	'direction',
-	[
-		{
-			abbreviated: new BooleanFlag({
-				flag: '--abbreviated',
-			}),
-		},
-	] as const,
-	module.direction,
-);
+template('direction', [
+	{
+		abbreviated: new BooleanFlag({
+			flag: '--abbreviated',
+		}),
+	},
+] as const);
 
-template(
-	'latitude',
-	[
-		{
-			max: new Flag({
-				flag: '--max <max>',
-				transform: transformNumber,
-			}),
-			min: new Flag({
-				flag: '--min <min>',
-				transform: transformNumber,
-			}),
-			precision: new Flag({
-				flag: '--precision <precision>',
-				transform: transformInteger,
-			}),
-		},
-	] as const,
-	module.latitude,
-);
+template('latitude', [
+	{
+		max: new Flag({
+			flag: '--max <max>',
+			transform: transformNumber,
+		}),
+		min: new Flag({
+			flag: '--min <min>',
+			transform: transformNumber,
+		}),
+		precision: new Flag({
+			flag: '--precision <precision>',
+			transform: transformInteger,
+		}),
+	},
+] as const);
 
-template(
-	'longitude',
-	[
-		{
-			max: new Flag({
-				flag: '--max <max>',
-				transform: transformNumber,
-			}),
-			min: new Flag({
-				flag: '--min <min>',
-				transform: transformNumber,
-			}),
-			precision: new Flag({
-				flag: '--precision <precision>',
-				transform: transformInteger,
-			}),
-		},
-	] as const,
-	module.longitude,
-);
+template('longitude', [
+	{
+		max: new Flag({
+			flag: '--max <max>',
+			transform: transformNumber,
+		}),
+		min: new Flag({
+			flag: '--min <min>',
+			transform: transformNumber,
+		}),
+		precision: new Flag({
+			flag: '--precision <precision>',
+			transform: transformInteger,
+		}),
+	},
+] as const);
 
 template(
 	'nearbyGPSCoordinate',
@@ -121,11 +98,6 @@ template(
 			}),
 		},
 	] as const,
-	options =>
-		module.nearbyGPSCoordinate({
-			...options,
-			origin: [...options.origin],
-		}),
 	{
 		pre(...args) {
 			const [{origin}] = args;
@@ -148,62 +120,46 @@ template(
 	},
 );
 
-template(
-	'ordinalDirection',
-	[
-		{
-			abbreviated: new BooleanFlag({
-				flag: '--abbreviated',
-			}),
-		},
-	] as const,
-	module.ordinalDirection,
-);
+template('ordinalDirection', [
+	{
+		abbreviated: new BooleanFlag({
+			flag: '--abbreviated',
+		}),
+	},
+] as const);
 
-template('secondaryAddress', [] as const, module.secondaryAddress);
+template('secondaryAddress', [] as const);
 
-template(
-	'state',
-	[
-		{
-			abbreviated: new BooleanFlag({
-				flag: '--abreviated',
-			}),
-		},
-	] as const,
-	module.state,
-);
+template('state', [
+	{
+		abbreviated: new BooleanFlag({
+			flag: '--abreviated',
+		}),
+	},
+] as const);
 
-template('street', [] as const, module.street);
+template('street', [] as const);
 
-template(
-	'streetAddress',
-	[
-		{
-			useFullAddress: new BooleanFlag({
-				flag: '--use-full-address',
-			}),
-		},
-	] as const,
-	module.streetAddress,
-);
+template('streetAddress', [
+	{
+		useFullAddress: new BooleanFlag({
+			flag: '--use-full-address',
+		}),
+	},
+] as const);
 
-template('timeZone', [] as const, module.timeZone);
+template('timeZone', [] as const);
 
-template(
-	'zipCode',
-	[
-		{
-			format: new Flag({
-				flag: '--format <format>',
-				transform: identity,
-				description: '"#" is replaced with a number.',
-			}),
-			state: new Flag({
-				flag: '--state <state>',
-				transform: identity,
-			}),
-		},
-	] as const,
-	module.zipCode,
-);
+template('zipCode', [
+	{
+		format: new Flag({
+			flag: '--format <format>',
+			transform: identity,
+			description: '"#" is replaced with a number.',
+		}),
+		state: new Flag({
+			flag: '--state <state>',
+			transform: identity,
+		}),
+	},
+] as const);

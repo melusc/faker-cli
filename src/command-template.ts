@@ -1,4 +1,4 @@
-import {faker, type UsableLocale} from '@faker-js/faker';
+import {allFakers, type Faker} from '@faker-js/faker';
 import camelCase from 'camelcase';
 import {program, type Command} from 'commander';
 
@@ -130,15 +130,26 @@ type ToArguments<T extends readonly Template[]> = {
 	[key in keyof T]: ToArgRecursive<T[key]>;
 };
 
-type TemplateFunction = <TemplateActual extends readonly Template[], Return>(
-	name: string | readonly string[],
+type GenericFunction = (...args: unknown[]) => unknown;
+type FilterFunctions<T> = {
+	[K in keyof T]: T[K] extends GenericFunction ? T[K] : never;
+};
+
+type TemplateFunction<Module extends keyof Faker> = <
+	// Combining the two to make TemplateActual typed seems a bit difficult
+	// I cannot get it to work
+	TemplateActual extends readonly Template[],
+	Fn extends keyof FilterFunctions<Faker[Module]> & string,
+	Return,
+>(
+	name: Fn,
 	template: TemplateActual,
-	callback: (...args: ToArguments<TemplateActual>) => Return,
-	transform?: {
+	options?: {
 		pre?: (
 			...args: ToArguments<TemplateActual>
 		) => ToArguments<TemplateActual> | undefined;
 		post?: (value: Return) => unknown;
+		alias?: readonly string[];
 	},
 ) => void;
 
@@ -224,8 +235,9 @@ function fill<TemplateActual extends readonly Template[]>(
 const isReadonlyArray: (arg0: any) => arg0 is readonly any[] = Array.isArray;
 function commandFromName(
 	program: Command,
-	name: string | readonly string[],
+	name: string,
 	usedNames: Set<string>,
+	alias: readonly string[] | undefined,
 ): Command {
 	function validateName(name: string) {
 		if (name === '') {
@@ -243,35 +255,41 @@ function commandFromName(
 		usedNames.add(name);
 	}
 
-	if (isReadonlyArray(name)) {
-		const first = name[0];
-		if (first === undefined) {
-			throw new Error('name should be a string or a non-empty array');
-		}
+	validateName(name);
+	const subProgram = program.command(name).allowExcessArguments(false);
 
-		validateName(first);
-		const subProgram = program.command(first);
-		for (const name_ of name.slice(1)) {
+	if (isReadonlyArray(alias)) {
+		for (const name_ of alias) {
 			validateName(name_);
 			subProgram.alias(name_);
 		}
 
-		subProgram.allowExcessArguments(false);
 		return subProgram;
 	}
 
-	validateName(name);
-	return program.command(name).allowExcessArguments(false);
+	return subProgram;
 }
 
 const rootCommands = new Set<string>();
-export function createTemplate(name: string | string[]): TemplateFunction {
-	const subProgram = commandFromName(program, name, rootCommands);
+export function createTemplate<Module extends keyof Faker>(
+	moduleName: Module,
+): TemplateFunction<Module> {
+	const subProgram = commandFromName(
+		program,
+		moduleName,
+		rootCommands,
+		undefined,
+	);
 
 	const scopeCommands = new Set<string>();
 
-	return ((name, template, callback, transform) => {
-		const subSubProgram = commandFromName(subProgram, name, scopeCommands);
+	return ((name, template, options) => {
+		const subSubProgram = commandFromName(
+			subProgram,
+			name,
+			scopeCommands,
+			options?.alias,
+		);
 		const keys = [...extractKeys(template)];
 		for (const {required, flag, description} of keys) {
 			if (required) {
@@ -282,15 +300,25 @@ export function createTemplate(name: string | string[]): TemplateFunction {
 		}
 
 		subSubProgram.action(() => {
-			faker.setLocale(program.getOptionValue('locale') as UsableLocale);
+			const locale = program.getOptionValue('locale') as keyof typeof allFakers;
+			if (!(locale in allFakers)) {
+				throw new Error(`${locale} not found in locales`);
+			}
+
+			const faker = allFakers[locale];
+			const module = faker[moduleName];
+			const fn = module[name];
 
 			let args = fill(template, subSubProgram);
 
-			args = transform?.pre?.(...args) ?? args;
+			args = options?.pre?.(...args) ?? args;
 
-			const result = callback(...args);
-			const final = transform?.post?.(result) ?? result;
+			// @ts-expect-error It is not a function for some reason
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+			const result = fn(...args);
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument
+			const final = options?.post?.(result) ?? result;
 			console.log(final);
 		});
-	}) satisfies TemplateFunction;
+	}) satisfies TemplateFunction<Module>;
 }

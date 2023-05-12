@@ -1,5 +1,3 @@
-import {faker} from '@faker-js/faker';
-
 import {BooleanFlag, Flag, createTemplate} from '../command-template.ts';
 import {
 	arrayOf,
@@ -9,7 +7,6 @@ import {
 	transformInteger,
 } from '../util.ts';
 
-const module = faker.string;
 const template = createTemplate('string');
 
 const casingFlag = new Flag({
@@ -27,107 +24,79 @@ const prefixFlag = new Flag({
 	transform: identity,
 });
 
-template(
-	'alpha',
-	[
-		{
-			casing: casingFlag,
-			exclude: new Flag({
-				flag: '--exclude <exclude>',
-				transform: arrayOf(matchRegex(/^[a-z]$/i), ''),
-				description: 'Alphabetical characters to exclude, no separator',
-			}),
-			length: lengthFlag,
-		},
-	],
-	module.alpha,
-);
-
-template(
-	'alphanumeric',
-	[
-		{
-			casing: casingFlag,
-			exclude: new Flag({
-				flag: '--exclude <exclude>',
-				transform: arrayOf(matchRegex(/^[a-z\d]$/i), ''),
-				description: 'Alphanumerical characters to exclude, no separator',
-			}),
-			length: lengthFlag,
-		},
-	],
-	module.alphanumeric,
-);
-
-template(
-	'binary',
-	[
-		{
-			length: lengthFlag,
-			prefix: prefixFlag,
-		},
-	] as const,
-	module.binary,
-);
-
-template(
-	'fromCharacters',
-	[
-		new Flag({
-			flag: '--characters <characters>',
-			transform: identity,
-			description: 'Characters to chose from, no separator',
-			required: true,
+template('alpha', [
+	{
+		casing: casingFlag,
+		exclude: new Flag({
+			flag: '--exclude <exclude>',
+			transform: arrayOf(matchRegex(/^[a-z]$/i), ''),
+			description: 'Alphabetical characters to exclude, no separator',
 		}),
-		lengthFlag,
-	] as const,
-	module.fromCharacters,
-);
+		length: lengthFlag,
+	},
+]);
 
-template(
-	'hexadecimal',
-	[
-		{
-			casing: casingFlag,
-			length: lengthFlag,
-			prefix: prefixFlag,
-		},
-	],
-	module.hexadecimal,
-);
+template('alphanumeric', [
+	{
+		casing: casingFlag,
+		exclude: new Flag({
+			flag: '--exclude <exclude>',
+			transform: arrayOf(matchRegex(/^[a-z\d]$/i), ''),
+			description: 'Alphanumerical characters to exclude, no separator',
+		}),
+		length: lengthFlag,
+	},
+]);
 
-template('nanoid', [lengthFlag], module.nanoid);
+template('binary', [
+	{
+		length: lengthFlag,
+		prefix: prefixFlag,
+	},
+] as const);
 
-template(
-	'numeric',
-	[
-		{
-			allowLeadingZeros: new BooleanFlag({
-				flag: '--allow-leading-zeros',
-			}),
-			exclude: new Flag({
-				flag: '--exclude <exclude>',
-				transform: arrayOf(matchRegex(/^\d$/), ''),
-				description: 'Numbers to exclude, no separator',
-			}),
-		},
-	],
-	module.numeric,
-);
+template('fromCharacters', [
+	new Flag({
+		flag: '--characters <characters>',
+		transform: identity,
+		description: 'Characters to chose from, no separator',
+		required: true,
+	}),
+	lengthFlag,
+] as const);
 
-template(
-	'octal',
-	[
-		{
-			length: lengthFlag,
-			prefix: prefixFlag,
-		},
-	],
-	module.octal,
-);
+template('hexadecimal', [
+	{
+		casing: casingFlag,
+		length: lengthFlag,
+		prefix: prefixFlag,
+	},
+]);
 
-template('sample', [lengthFlag], module.sample);
+template('nanoid', [lengthFlag]);
 
-template('symbol', [lengthFlag], module.symbol);
+template('numeric', [
+	{
+		allowLeadingZeros: new BooleanFlag({
+			flag: '--allow-leading-zeros',
+		}),
+		exclude: new Flag({
+			flag: '--exclude <exclude>',
+			transform: arrayOf(matchRegex(/^\d$/), ''),
+			description: 'Numbers to exclude, no separator',
+		}),
+	},
+]);
 
-template('uuid', [] as const, module.uuid);
+template('octal', [
+	{
+		length: lengthFlag,
+		prefix: prefixFlag,
+	},
+]);
+
+template('sample', [lengthFlag]);
+
+template('symbol', [lengthFlag]);
+
+template('uuid', [] as const);

@@ -1,9 +1,6 @@
-import {faker} from '@faker-js/faker';
-
 import {BooleanFlag, Flag, createTemplate} from '../command-template.ts';
 import {identity, stringOf} from '../util.ts';
 
-const module = faker.color;
 const template = createTemplate('color');
 
 const formatFlag = new Flag({
@@ -28,96 +25,68 @@ const includeAlphaFlag = new BooleanFlag({
 	flag: '--include-alpha',
 });
 
-template(
-	'cmyk',
-	[
-		{
-			format: formatFlag,
-		},
-	],
-	module.cmyk,
-);
+template('cmyk', [
+	{
+		format: formatFlag,
+	},
+]);
 
-template(
-	'colorByCSSColorSpace',
-	[
-		{
-			format: formatFlag,
-			space: spaceFlag,
-		},
-	],
-	module.colorByCSSColorSpace,
-);
+template('colorByCSSColorSpace', [
+	{
+		format: formatFlag,
+		space: spaceFlag,
+	},
+]);
 
-template('cssSupportedFunction', [] as const, module.cssSupportedFunction);
+template('cssSupportedFunction', [] as const);
 
-template('cssSupportedSpace', [] as const, module.cssSupportedSpace);
+template('cssSupportedSpace', [] as const);
 
-template(
-	'hsl',
-	[
-		{
-			format: formatFlag,
-			includeAlpha: includeAlphaFlag,
-		},
-	],
-	module.hsl,
-);
+template('hsl', [
+	{
+		format: formatFlag,
+		includeAlpha: includeAlphaFlag,
+	},
+]);
 
-template('human', [] as const, module.human);
+template('human', [] as const);
 
-template(
-	'hwb',
-	[
-		{
-			format: formatFlag,
-		},
-	],
-	module.hwb,
-);
+template('hwb', [
+	{
+		format: formatFlag,
+	},
+]);
 
-template(
-	'lab',
-	[
-		{
-			format: formatFlag,
-		},
-	],
-	module.lab,
-);
+template('lab', [
+	{
+		format: formatFlag,
+	},
+]);
 
-template(
-	'lch',
-	[
-		{
-			format: formatFlag,
-		},
-	],
-	module.lch,
-);
+template('lch', [
+	{
+		format: formatFlag,
+	},
+]);
 
-template(
-	'rgb',
-	[
-		{
-			format: new Flag({
-				flag: '--format <format>',
-				transform: stringOf(
-					new Set(['hex', 'css', 'binary', 'decimal'] as const),
-				),
-			}),
-			includeAlpha: includeAlphaFlag,
-			prefix: new Flag({
-				flag: '--prefix <prefix>',
-				transform: identity,
-			}),
-			casing: new Flag({
-				flag: '--casing <casing>',
-				transform: stringOf(new Set(['lower', 'upper', 'mixed'] as const)),
-			}),
-		},
-	],
-	module.rgb,
-);
+template('rgb', [
+	{
+		format: new Flag({
+			flag: '--format <format>',
+			transform: stringOf(
+				new Set(['hex', 'css', 'binary', 'decimal'] as const),
+			),
+		}),
+		includeAlpha: includeAlphaFlag,
+		prefix: new Flag({
+			flag: '--prefix <prefix>',
+			transform: identity,
+		}),
+		casing: new Flag({
+			flag: '--casing <casing>',
+			transform: stringOf(new Set(['lower', 'upper', 'mixed'] as const)),
+		}),
+	},
+]);
 
-template('space', [] as const, module.space);
+template('space', [] as const);

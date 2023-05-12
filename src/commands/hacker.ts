@@ -1,18 +1,15 @@
-import {faker} from '@faker-js/faker';
-
 import {createTemplate} from '../command-template.ts';
 
-const module = faker.hacker;
 const template = createTemplate('hacker');
 
-template('abbreviation', [] as const, module.abbreviation);
+template('abbreviation', [] as const);
 
-template('adjective', [] as const, module.adjective);
+template('adjective', [] as const);
 
-template('ingverb', [] as const, module.ingverb);
+template('ingverb', [] as const);
 
-template('noun', [] as const, module.noun);
+template('noun', [] as const);
 
-template('phrase', [] as const, module.phrase);
+template('phrase', [] as const);
 
-template('verb', [] as const, module.verb);
+template('verb', [] as const);

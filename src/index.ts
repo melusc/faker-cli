@@ -22,7 +22,6 @@ import './commands/music.ts';
 import './commands/number.ts';
 import './commands/person.ts';
 import './commands/phone.ts';
-import './commands/random.ts';
 import './commands/science.ts';
 import './commands/system.ts';
 import './commands/vehicle.ts';

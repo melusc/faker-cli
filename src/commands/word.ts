@@ -1,9 +1,6 @@
-import {faker} from '@faker-js/faker';
-
 import {Flag, createTemplate} from '../command-template.ts';
 import {stringOf, transformInteger} from '../util.ts';
 
-const module = faker.word;
 const template = createTemplate('word');
 
 const lengthFlag = new Flag({
@@ -24,103 +21,67 @@ const strategyFlag = new Flag({
 		"One of 'any-length' | 'closest' | 'fail' | 'longest' | 'shortest'",
 });
 
-template(
-	'adjective',
-	[
-		{
-			length: lengthFlag,
-			strategy: strategyFlag,
-		},
-	],
-	module.adjective,
-);
+template('adjective', [
+	{
+		length: lengthFlag,
+		strategy: strategyFlag,
+	},
+]);
 
-template(
-	'adverb',
-	[
-		{
-			length: lengthFlag,
-			strategy: strategyFlag,
-		},
-	],
-	module.adverb,
-);
+template('adverb', [
+	{
+		length: lengthFlag,
+		strategy: strategyFlag,
+	},
+]);
 
-template(
-	'conjunction',
-	[
-		{
-			length: lengthFlag,
-			strategy: strategyFlag,
-		},
-	],
-	module.conjunction,
-);
+template('conjunction', [
+	{
+		length: lengthFlag,
+		strategy: strategyFlag,
+	},
+]);
 
-template(
-	'interjection',
-	[
-		{
-			length: lengthFlag,
-			strategy: strategyFlag,
-		},
-	],
-	module.interjection,
-);
+template('interjection', [
+	{
+		length: lengthFlag,
+		strategy: strategyFlag,
+	},
+]);
 
-template(
-	'noun',
-	[
-		{
-			length: lengthFlag,
-			strategy: strategyFlag,
-		},
-	],
-	module.noun,
-);
+template('noun', [
+	{
+		length: lengthFlag,
+		strategy: strategyFlag,
+	},
+]);
 
-template(
-	'preposition',
-	[
-		{
-			length: lengthFlag,
-			strategy: strategyFlag,
-		},
-	],
-	module.preposition,
-);
+template('preposition', [
+	{
+		length: lengthFlag,
+		strategy: strategyFlag,
+	},
+]);
 
-template(
-	'sample',
-	[
-		{
-			length: lengthFlag,
-			strategy: strategyFlag,
-		},
-	],
-	module.sample,
-);
+template('sample', [
+	{
+		length: lengthFlag,
+		strategy: strategyFlag,
+	},
+]);
 
-template(
-	'verb',
-	[
-		{
-			length: lengthFlag,
-			strategy: strategyFlag,
-		},
-	],
-	module.verb,
-);
+template('verb', [
+	{
+		length: lengthFlag,
+		strategy: strategyFlag,
+	},
+]);
 
-template(
-	'words',
-	[
-		{
-			count: new Flag({
-				flag: '--count <count>',
-				transform: transformInteger,
-			}),
-		},
-	],
-	module.words,
-);
+template('words', [
+	{
+		count: new Flag({
+			flag: '--count <count>',
+			transform: transformInteger,
+		}),
+	},
+]);
