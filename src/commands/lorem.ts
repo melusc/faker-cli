@@ -1,136 +1,84 @@
-import {faker} from '@faker-js/faker';
-
 import {Flag, createTemplate} from '../command-template.ts';
 import {stringOf, transformInteger, identity} from '../util.ts';
 
-const module = faker.lorem;
 const template = createTemplate('lorem');
 
-template(
-	'lines',
-	[
-		new Flag({
-			flag: '--line-count <count>',
-			transform: transformInteger,
-		}),
-	] as const,
-	module.lines,
-);
+template('lines', [
+	new Flag({
+		flag: '--line-count <count>',
+		transform: transformInteger,
+	}),
+] as const);
 
-template(
-	'paragraph',
-	[
-		new Flag({
-			flag: '--sentence-count <count>',
-			transform: transformInteger,
-		}),
-	] as const,
-	module.paragraph,
-);
+template('paragraph', [
+	new Flag({
+		flag: '--sentence-count <count>',
+		transform: transformInteger,
+	}),
+] as const);
 
-template(
-	'paragraphs',
-	[
-		new Flag({
-			flag: '--paragraph-count <count>',
-			transform: transformInteger,
-		}),
-		new Flag({
-			flag: '--separator <sep>',
-			transform: identity,
-		}),
-	] as const,
-	module.paragraphs,
-);
+template('paragraphs', [
+	new Flag({
+		flag: '--paragraph-count <count>',
+		transform: transformInteger,
+	}),
+	new Flag({
+		flag: '--separator <sep>',
+		transform: identity,
+	}),
+] as const);
 
-template(
-	'sentence',
-	[
-		new Flag({
-			flag: '--word-count <count>',
-			transform: transformInteger,
-		}),
-	] as const,
-	module.sentence,
-);
+template('sentence', [
+	new Flag({
+		flag: '--word-count <count>',
+		transform: transformInteger,
+	}),
+] as const);
 
-template(
-	'sentences',
-	[
-		new Flag({
-			flag: '--sentence-count <count>',
-			transform: transformInteger,
-		}),
-		new Flag({
-			flag: '--separator <sep>',
-			transform: identity,
-		}),
-	] as const,
-	module.sentences,
-);
+template('sentences', [
+	new Flag({
+		flag: '--sentence-count <count>',
+		transform: transformInteger,
+	}),
+	new Flag({
+		flag: '--separator <sep>',
+		transform: identity,
+	}),
+] as const);
 
-template(
-	'slug',
-	[
-		new Flag({
-			flag: '--word-count <count>',
-			transform: transformInteger,
-		}),
-	] as const,
-	module.slug,
-);
+template('slug', [
+	new Flag({
+		flag: '--word-count <count>',
+		transform: transformInteger,
+	}),
+] as const);
 
-template('text', [] as const, module.text);
+template('text', [] as const);
 
-template(
-	'word',
-	[
-		{
-			length: {
-				min: new Flag({
-					flag: '--min <min>',
-					transform: transformInteger,
-				}),
-				max: new Flag({
-					flag: '--max <max>',
-					transform: transformInteger,
-				}),
-			},
-			strategy: new Flag({
-				flag: '--strategy <strategy>',
-				transform: stringOf(
-					new Set([
-						'fail',
-						'closest',
-						'shortest',
-						'longest',
-						'any-length',
-					] as const),
-				),
-			}),
-		},
-	] as const,
-	module.word,
+template('word', [
 	{
-		pre(...args) {
-			const min = args[0]?.length?.min;
-			const max = args[0]?.length?.max;
-			if ((min === undefined) !== (max === undefined)) {
-				throw new Error('max and min should both be undefined or both defined');
-			}
-
-			return args;
-		},
-	},
-);
-
-template(
-	'words',
-	[
-		new Flag({
-			flag: '--amount <amount>',
+		length: new Flag({
+			flag: '--length <length>',
 			transform: transformInteger,
 		}),
-	] as const,
-	module.words,
-);
+		strategy: new Flag({
+			flag: '--strategy <strategy>',
+			transform: stringOf(
+				new Set([
+					'any-length',
+					'closest',
+					'fail',
+					'longest',
+					'shortest',
+				] as const),
+			),
+		}),
+	},
+] as const);
+
+template('words', [
+	new Flag({
+		flag: '--word-count <amount>',
+		transform: transformInteger,
+	}),
+] as const);

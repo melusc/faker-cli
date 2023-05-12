@@ -15,6 +15,13 @@
 				"newlines-between": "always",
 				"warnOnUnassignedImports": true
 			}
+		],
+		"@typescript-eslint/quotes": [
+			"error",
+			"single",
+			{
+				"avoidEscape": true
+			}
 		]
 	}
 }

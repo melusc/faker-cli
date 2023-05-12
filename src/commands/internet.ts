@@ -1,205 +1,198 @@
-import {faker} from '@faker-js/faker';
-
 import {BooleanFlag, Flag, createTemplate} from '../command-template.ts';
-import {integerBetween, stringOf, transformInteger, identity} from '../util.ts';
+import {
+	integerBetween,
+	stringOf,
+	transformInteger,
+	identity,
+	arrayOf,
+	transformRegex,
+} from '../util.ts';
 
-const module = faker.internet;
 const template = createTemplate('internet');
 
-template('avatar', [] as const, module.avatar);
+template('avatar', [] as const);
 
-template(
-	'color',
-	[
-		new Flag({
-			flag: '--red <int>',
+template('color', [
+	{
+		blueBase: new Flag({
+			flag: '--blue-base <int>',
 			transform: integerBetween(0, 255),
 		}),
-		new Flag({
-			flag: '--green <int>',
+		greenBase: new Flag({
+			flag: '--green-base <int>',
 			transform: integerBetween(0, 255),
 		}),
-		new Flag({
-			flag: '--blue <int>',
+		redBase: new Flag({
+			flag: '--red-base <int>',
 			transform: integerBetween(0, 255),
 		}),
-	] as const,
-	module.color,
-);
+	},
+] as const);
 
-template(['domainName', 'domain'], [] as const, module.domainName);
-
-template(['domainSuffix', 'suffix'], [] as const, module.domainSuffix);
-
-template('domainWord', [] as const, module.domainWord);
-
-template(
-	'email',
-	[
-		new Flag({
+template('displayName', [
+	{
+		firstName: new Flag({
 			flag: '--first-name <name>',
 			transform: identity,
 		}),
-		new Flag({
+		lastName: new Flag({
 			flag: '--last-name <name>',
 			transform: identity,
 		}),
-		new Flag({
+	},
+]);
+
+template('domainName', [] as const, {
+	alias: ['doman'],
+});
+
+template('domainSuffix', [] as const);
+
+template('domainWord', [] as const);
+
+template('email', [
+	{
+		allowSpecialCharacters: new BooleanFlag({
+			flag: '--allow-special-characters',
+		}),
+		firstName: new Flag({
+			flag: '--first-name <name>',
+			transform: identity,
+		}),
+		lastName: new Flag({
+			flag: '--last-name <name>',
+			transform: identity,
+		}),
+		provider: new Flag({
 			flag: '--provider <provider>',
 			transform: identity,
 		}),
-		{
-			allowSpecialCharacters: new BooleanFlag({
-				flag: '--allow-special-characters',
-			}),
-		},
-	] as const,
-	module.email,
-);
+	},
+] as const);
 
-template('emoji', [] as const, module.emoji);
+const emojiType = [
+	'smiley',
+	'body',
+	'person',
+	'nature',
+	'food',
+	'travel',
+	'activity',
+	'object',
+	'symbol',
+	'flag',
+] as const;
 
-template(
-	'exampleEmail',
-	[
-		new Flag({
+template('emoji', [
+	{
+		types: new Flag({
+			flag: '--type <emoji type>',
+			transform: arrayOf(stringOf(emojiType)),
+			description: `Seperated by comma, can be ${[...emojiType].join(', ')}`,
+		}),
+	},
+]);
+
+template('exampleEmail', [
+	{
+		allowSpecialCharacters: new BooleanFlag({
+			flag: '--allow-special-characters',
+		}),
+		firstName: new Flag({
 			flag: '--first-name <name>',
 			transform: identity,
 		}),
-		new Flag({
+		lastName: new Flag({
 			flag: '--last-name <name>',
 			transform: identity,
 		}),
-		{
-			allowSpecialCharacters: new BooleanFlag({
-				flag: '--allow-special-characters',
-			}),
-		},
-	] as const,
-	module.exampleEmail,
-);
+	},
+] as const);
 
-template('httpMethod', [] as const, module.httpMethod);
+template('httpMethod', [] as const);
 
-type HttpStatusCodeType =
-	| 'informational'
-	| 'success'
-	| 'clientError'
-	| 'serverError'
-	| 'redirection';
+const validHttpStatusCodes = [
+	'informational',
+	'success',
+	'clientError',
+	'serverError',
+	'redirection',
+] as const;
 
-const validHttpStatusCodes: ReadonlySet<HttpStatusCodeType>
-	= new Set<HttpStatusCodeType>([
-		'informational',
-		'success',
-		'clientError',
-		'serverError',
-		'redirection',
-	]);
-
-template(
-	'httpStatusCode',
-	[
-		{
-			types: new Flag({
-				flag: '--types <types>',
-				transform(s: string | undefined) {
-					if (s === undefined) {
-						return undefined;
-					}
-
-					const split = s
-						.split(',')
-						.map(s => s.trim())
-						.filter(Boolean);
-
-					const types: HttpStatusCodeType[] = [];
-
-					for (const item of split) {
-						if (validHttpStatusCodes.has(item as HttpStatusCodeType)) {
-							types.push(item as HttpStatusCodeType);
-						} else {
-							throw new Error(`Unknown type "${item}"`);
-						}
-					}
-
-					return types;
-				},
-				description: 'Can be one of ' + [...validHttpStatusCodes].join(', '),
-			}),
-		},
-	] as const,
-	module.httpStatusCode,
-);
-
-template('ip', [] as const, module.ip);
-
-template('ipv4', [] as const, module.ipv4);
-
-template('ipv6', [] as const, module.ipv6);
-
-template(
-	'mac',
-	[
-		new Flag({
-			flag: '--sep <sep>',
-			transform: stringOf(new Set(['', ':', '-'] as const)),
+template('httpStatusCode', [
+	{
+		types: new Flag({
+			flag: '--types <types>',
+			transform: arrayOf(stringOf(validHttpStatusCodes)),
+			description: `Seperated by a comma, can be ${[
+				...validHttpStatusCodes,
+			].join(', ')}`,
 		}),
-	] as const,
-	module.mac,
-);
+	},
+] as const);
 
-template(
-	'password',
-	[
-		new Flag({
+template('ip', [] as const);
+
+template('ipv4', [] as const);
+
+template('ipv6', [] as const);
+
+template('mac', [
+	{
+		separator: new Flag({
+			flag: '--separator <separator>',
+			transform: stringOf(['', ':', '-'] as const),
+		}),
+	},
+] as const);
+
+template('password', [
+	{
+		length: new Flag({
 			flag: '--length <length>',
 			transform: transformInteger,
 		}),
-		new BooleanFlag({
+		memorable: new BooleanFlag({
 			flag: '--memorable',
 		}),
-		new Flag({
+		pattern: new Flag({
 			flag: '--pattern <pattern>',
-			transform(s: string | undefined) {
-				if (s === undefined) {
-					return s;
-				}
-
-				try {
-					return new RegExp(s);
-				} catch {
-					throw new Error(`Invalid regex "${s}"`);
-				}
-			},
+			transform: transformRegex,
 		}),
-		new Flag({
+		prefix: new Flag({
 			flag: '--prefix <prefix>',
 			transform: identity,
 		}),
-	] as const,
-	module.password,
-);
+	},
+] as const);
 
-template('port', [] as const, module.port);
+template('port', [] as const);
 
-template('protocol', [] as const, module.protocol);
+template('protocol', [] as const);
 
-template('url', [] as const, module.url);
+template('url', [
+	{
+		appendSlash: new BooleanFlag({
+			flag: '--apend-slash',
+		}),
+		protocol: new Flag({
+			flag: '--protocol <protocol>',
+			transform: stringOf(['http', 'https'] as const),
+		}),
+	},
+] as const);
 
-template('userAgent', [] as const, module.userAgent);
+template('userAgent', [] as const);
 
-template(
-	'userName',
-	[
-		new Flag({
+template('userName', [
+	{
+		firstName: new Flag({
 			flag: '--first-name <name>',
 			transform: identity,
 		}),
-		new Flag({
+		lastName: new Flag({
 			flag: '--last-name <name>',
 			transform: identity,
 		}),
-	] as const,
-	module.userName,
-);
+	},
+] as const);

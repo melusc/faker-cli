@@ -1,38 +1,92 @@
-import {faker} from '@faker-js/faker';
+import {BooleanFlag, Flag, createTemplate} from '../command-template.ts';
+import {identity, stringOf} from '../util.ts';
 
-import {Flag, createTemplate} from '../command-template.ts';
-import {stringOf} from '../util.ts';
-
-const module = faker.color;
 const template = createTemplate('color');
 
-const colorFormat = [
+const formatFlag = new Flag({
+	flag: '--format <format>',
+	transform: stringOf(new Set(['css', 'binary', 'decimal'] as const)),
+});
+
+const spaceFlag = new Flag({
+	flag: '--space <space>',
+	transform: stringOf(
+		new Set([
+			'sRGB',
+			'display-p3',
+			'rec2020',
+			'a98-rgb',
+			'prophoto-rgb',
+		] as const),
+	),
+});
+
+const includeAlphaFlag = new BooleanFlag({
+	flag: '--include-alpha',
+});
+
+template('cmyk', [
+	{
+		format: formatFlag,
+	},
+]);
+
+template('colorByCSSColorSpace', [
+	{
+		format: formatFlag,
+		space: spaceFlag,
+	},
+]);
+
+template('cssSupportedFunction', [] as const);
+
+template('cssSupportedSpace', [] as const);
+
+template('hsl', [
+	{
+		format: formatFlag,
+		includeAlpha: includeAlphaFlag,
+	},
+]);
+
+template('human', [] as const);
+
+template('hwb', [
+	{
+		format: formatFlag,
+	},
+]);
+
+template('lab', [
+	{
+		format: formatFlag,
+	},
+]);
+
+template('lch', [
+	{
+		format: formatFlag,
+	},
+]);
+
+template('rgb', [
 	{
 		format: new Flag({
 			flag: '--format <format>',
-			transform: stringOf(new Set(['css', 'binary', 'decimal'] as const)),
+			transform: stringOf(
+				new Set(['hex', 'css', 'binary', 'decimal'] as const),
+			),
+		}),
+		includeAlpha: includeAlphaFlag,
+		prefix: new Flag({
+			flag: '--prefix <prefix>',
+			transform: identity,
+		}),
+		casing: new Flag({
+			flag: '--casing <casing>',
+			transform: stringOf(new Set(['lower', 'upper', 'mixed'] as const)),
 		}),
 	},
-] as const;
+]);
 
-template('cmyk', colorFormat, module.cmyk);
-
-template('colorByCSSColorSpace', colorFormat, module.colorByCSSColorSpace);
-
-template('cssSupportedFunction', [] as const, module.cssSupportedFunction);
-
-template('cssSupportedSpace', [] as const, module.cssSupportedSpace);
-
-template('hsl', colorFormat, module.hsl);
-
-template('human', [] as const, module.human);
-
-template('hwb', colorFormat, module.hwb);
-
-template('lab', colorFormat, module.lab);
-
-template('lch', colorFormat, module.lch);
-
-template('rgb', colorFormat, module.rgb);
-
-template('space', [] as const, module.space);
+template('space', [] as const);
