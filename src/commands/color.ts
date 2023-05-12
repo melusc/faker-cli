@@ -1,38 +1,123 @@
 import {faker} from '@faker-js/faker';
 
-import {Flag, createTemplate} from '../command-template.ts';
-import {stringOf} from '../util.ts';
+import {BooleanFlag, Flag, createTemplate} from '../command-template.ts';
+import {identity, stringOf} from '../util.ts';
 
 const module = faker.color;
 const template = createTemplate('color');
 
-const colorFormat = [
-	{
-		format: new Flag({
-			flag: '--format <format>',
-			transform: stringOf(new Set(['css', 'binary', 'decimal'] as const)),
-		}),
-	},
-] as const;
+const formatFlag = new Flag({
+	flag: '--format <format>',
+	transform: stringOf(new Set(['css', 'binary', 'decimal'] as const)),
+});
 
-template('cmyk', colorFormat, module.cmyk);
+const spaceFlag = new Flag({
+	flag: '--space <space>',
+	transform: stringOf(
+		new Set([
+			'sRGB',
+			'display-p3',
+			'rec2020',
+			'a98-rgb',
+			'prophoto-rgb',
+		] as const),
+	),
+});
 
-template('colorByCSSColorSpace', colorFormat, module.colorByCSSColorSpace);
+const includeAlphaFlag = new BooleanFlag({
+	flag: '--include-alpha',
+});
+
+template(
+	'cmyk',
+	[
+		{
+			format: formatFlag,
+		},
+	],
+	module.cmyk,
+);
+
+template(
+	'colorByCSSColorSpace',
+	[
+		{
+			format: formatFlag,
+			space: spaceFlag,
+		},
+	],
+	module.colorByCSSColorSpace,
+);
 
 template('cssSupportedFunction', [] as const, module.cssSupportedFunction);
 
 template('cssSupportedSpace', [] as const, module.cssSupportedSpace);
 
-template('hsl', colorFormat, module.hsl);
+template(
+	'hsl',
+	[
+		{
+			format: formatFlag,
+			includeAlpha: includeAlphaFlag,
+		},
+	],
+	module.hsl,
+);
 
 template('human', [] as const, module.human);
 
-template('hwb', colorFormat, module.hwb);
+template(
+	'hwb',
+	[
+		{
+			format: formatFlag,
+		},
+	],
+	module.hwb,
+);
 
-template('lab', colorFormat, module.lab);
+template(
+	'lab',
+	[
+		{
+			format: formatFlag,
+		},
+	],
+	module.lab,
+);
 
-template('lch', colorFormat, module.lch);
+template(
+	'lch',
+	[
+		{
+			format: formatFlag,
+		},
+	],
+	module.lch,
+);
 
-template('rgb', colorFormat, module.rgb);
+template(
+	'rgb',
+	[
+		{
+			format: new Flag({
+				flag: '--format <format>',
+				transform: stringOf(
+					new Set(['hex', 'css', 'binary', 'decimal'] as const),
+				),
+			}),
+			includeAlpha: includeAlphaFlag,
+			prefix: new Flag({
+				flag: '--prefix <prefix>',
+				transform: identity,
+			}),
+			casing: new Flag({
+				flag: '--casing <casing>',
+				transform: stringOf(new Set(['lower', 'upper', 'mixed'] as const)),
+			}),
+		},
+	],
+	module.rgb,
+);
 
 template('space', [] as const, module.space);
