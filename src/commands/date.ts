@@ -14,7 +14,7 @@ function transformDate(s: string): string | number {
 	return s;
 }
 
-const refDateFlag = new Flag({
+export const refDateFlag = new Flag({
 	flag: '--ref-date <date>',
 	transform: transformDate,
 });

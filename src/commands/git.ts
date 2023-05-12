@@ -1,12 +1,24 @@
 import {faker} from '@faker-js/faker';
 
 import {BooleanFlag, Flag, createTemplate} from '../command-template.ts';
-import {stringOf} from '../util.ts';
+import {stringOf, transformInteger} from '../util.ts';
+
+import {refDateFlag} from './date.ts';
 
 const module = faker.git;
 const template = createTemplate('git');
 
 template('branch', [] as const, module.branch);
+
+template(
+	'commitDate',
+	[
+		{
+			refDate: refDateFlag,
+		},
+	] as const,
+	module.commitDate,
+);
 
 template(
 	'commitEntry',
@@ -19,6 +31,7 @@ template(
 			merge: new BooleanFlag({
 				flag: '--merge',
 			}),
+			refDate: refDateFlag,
 		},
 	] as const,
 	module.commitEntry,
@@ -26,6 +39,15 @@ template(
 
 template('commitMessage', [] as const, module.commitMessage);
 
-template('commitSha', [] as const, module.commitSha);
-
-template('shortSha', [] as const, module.shortSha);
+template(
+	'commitSha',
+	[
+		{
+			length: new Flag({
+				flag: '--length <length>',
+				transform: transformInteger,
+			}),
+		},
+	] as const,
+	module.commitSha,
+);
