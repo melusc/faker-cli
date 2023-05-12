@@ -1,20 +1,12 @@
 import {faker} from '@faker-js/faker';
 
 import {BooleanFlag, Flag, createTemplate} from '../command-template.ts';
-import {stringOf, transformInteger, transformNumber} from '../util.ts';
+import {stringOf, transformDate, transformInteger, transformNumber} from '../util.ts';
 
 const module = faker.date;
 const template = createTemplate('date');
 
-function transformDate(s: string): string | number {
-	if (/^-?\d+$/.test(s)) {
-		return Number(s);
-	}
-
-	return s;
-}
-
-export const refDateFlag = new Flag({
+const refDateFlag = new Flag({
 	flag: '--ref-date <date>',
 	transform: transformDate,
 });

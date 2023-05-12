@@ -1,9 +1,12 @@
 import {faker} from '@faker-js/faker';
 
 import {BooleanFlag, Flag, createTemplate} from '../command-template.ts';
-import {stringOf, transformInteger} from '../util.ts';
+import {stringOf, transformDate, transformInteger} from '../util.ts';
 
-import {refDateFlag} from './date.ts';
+const refDateFlag = new Flag({
+	flag: '--ref-date <date>',
+	transform: transformDate,
+});
 
 const module = faker.git;
 const template = createTemplate('git');

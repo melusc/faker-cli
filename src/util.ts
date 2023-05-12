@@ -120,3 +120,11 @@ export function transformRegex(s: string) {
 		throw new Error(`Invalid regex "${s}"`);
 	}
 }
+
+export function transformDate(s: string): string | number {
+	if (/^-?\d+$/.test(s)) {
+		return Number(s);
+	}
+
+	return s;
+}
