@@ -23,6 +23,7 @@ import './commands/number.ts';
 import './commands/person.ts';
 import './commands/phone.ts';
 import './commands/science.ts';
+import './commands/string.ts';
 import './commands/system.ts';
 import './commands/vehicle.ts';
 
