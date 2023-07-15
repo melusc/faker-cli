@@ -11,7 +11,7 @@
 		"rimraf": "^5.0.1",
 		"type-fest": "^3.13.0",
 		"typescript": "^5.1.6",
-		"xo": "^0.54.2"
+		"xo": "^0.55.0"
 	},
 	"scripts": {
 		"build:esbuild": "esbuild --packages=external --bundle --outfile=dist/cli.js --sourcemap --format=esm src/index.ts",
