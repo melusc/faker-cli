@@ -6,7 +6,7 @@
 	"devDependencies": {
 		"@lusc/tsconfig": "^2.3.0",
 		"@types/node": "^20.4.8",
-		"esbuild": "^0.18.18",
+		"esbuild": "^0.19.0",
 		"prettier": "^3.0.1",
 		"rimraf": "^5.0.1",
 		"type-fest": "^4.1.0",
