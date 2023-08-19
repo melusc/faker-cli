@@ -23,7 +23,7 @@
 	},
 	"dependencies": {
 		"@faker-js/faker": "^8.0.2",
-		"camelcase": "^7.0.1",
+		"camelcase": "^8.0.0",
 		"commander": "^11.0.0"
 	}
 }
