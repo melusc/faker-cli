@@ -4,7 +4,7 @@
 	"type": "module",
 	"packageManager": "yarn@3.6.3",
 	"devDependencies": {
-		"@lusc/tsconfig": "^3.0.0",
+		"@lusc/tsconfig": "^4.0.0",
 		"@types/node": "^20.5.8",
 		"esbuild": "^0.19.2",
 		"prettier": "^3.0.3",
