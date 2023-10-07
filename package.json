@@ -2,14 +2,14 @@
 	"name": "faker-cli",
 	"private": true,
 	"type": "module",
-	"packageManager": "yarn@3.6.3",
+	"packageManager": "yarn@3.6.4",
 	"devDependencies": {
 		"@lusc/tsconfig": "^4.0.0",
-		"@types/node": "^20.8.0",
+		"@types/node": "^20.8.3",
 		"esbuild": "^0.19.4",
 		"prettier": "^3.0.3",
 		"rimraf": "^5.0.5",
-		"type-fest": "^4.3.3",
+		"type-fest": "^4.4.0",
 		"typescript": "^5.2.2",
 		"xo": "^0.56.0"
 	},

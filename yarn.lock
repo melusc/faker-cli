@@ -374,10 +374,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.8.0":
-  version: 20.8.0
-  resolution: "@types/node@npm:20.8.0"
-  checksum: ebad6342d54238a24bf980d7750117a5d67749c9b72cbb7a974a1e932c39034aa3a810d669e007e8a5071782a253aa069a187b614407a382403c9826e837c849
+"@types/node@npm:^20.8.3":
+  version: 20.8.3
+  resolution: "@types/node@npm:20.8.3"
+  checksum: bfb88b341faeb19f8fd37306a3bf433721b876c6491d10fcb0b13fd26601fa36ee45113dd82b1e1c23e3c957dff5b99f81a16493cefa03abe797e41a2487a4f7
   languageName: node
   linkType: hard
 
@@ -1709,13 +1709,13 @@ __metadata:
   dependencies:
     "@faker-js/faker": ^8.1.0
     "@lusc/tsconfig": ^4.0.0
-    "@types/node": ^20.8.0
+    "@types/node": ^20.8.3
     camelcase: ^8.0.0
     commander: ^11.0.0
     esbuild: ^0.19.4
     prettier: ^3.0.3
     rimraf: ^5.0.5
-    type-fest: ^4.3.3
+    type-fest: ^4.4.0
     typescript: ^5.2.2
     xo: ^0.56.0
   languageName: unknown
@@ -4007,10 +4007,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:^4.3.3":
-  version: 4.3.3
-  resolution: "type-fest@npm:4.3.3"
-  checksum: 843c1bb3c2c185594a3a3d67bd92e8194dfa31ca0d88c078371efdd8d2150ea278a624cb260c91824e1f486ff06759c96bc03a134af7f0575e2d06eaa8be1c32
+"type-fest@npm:^4.4.0":
+  version: 4.4.0
+  resolution: "type-fest@npm:4.4.0"
+  checksum: 0b8ae68c3a87e76ad41a317604b8864ee59dbaad095957ebeea8e95d22d8a269ad6d55fe28e16d645a05a8bdfc633e7f706019d6616a8194ae54cbabb36dec2b
   languageName: node
   linkType: hard
 
