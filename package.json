@@ -5,7 +5,7 @@
 	"packageManager": "yarn@3.6.4",
 	"devDependencies": {
 		"@lusc/tsconfig": "^4.0.0",
-		"@types/node": "^20.8.3",
+		"@types/node": "^20.8.6",
 		"esbuild": "^0.19.4",
 		"prettier": "^3.0.3",
 		"rimraf": "^5.0.5",
@@ -24,6 +24,6 @@
 	"dependencies": {
 		"@faker-js/faker": "^8.1.0",
 		"camelcase": "^8.0.0",
-		"commander": "^11.0.0"
+		"commander": "^11.1.0"
 	}
 }
