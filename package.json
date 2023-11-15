@@ -2,14 +2,14 @@
 	"name": "faker-cli",
 	"private": true,
 	"type": "module",
-	"packageManager": "yarn@4.0.1",
+	"packageManager": "yarn@4.0.2",
 	"devDependencies": {
 		"@lusc/tsconfig": "^4.0.0",
-		"@types/node": "^20.8.9",
+		"@types/node": "^20.9.0",
 		"esbuild": "^0.19.5",
-		"prettier": "^3.0.3",
+		"prettier": "^3.1.0",
 		"rimraf": "^5.0.5",
-		"type-fest": "^4.6.0",
+		"type-fest": "^4.7.1",
 		"typescript": "^5.2.2",
 		"xo": "^0.56.0"
 	},
@@ -22,7 +22,7 @@
 		"fmt": "prettier --cache -w . && xo --fix"
 	},
 	"dependencies": {
-		"@faker-js/faker": "^8.2.0",
+		"@faker-js/faker": "^8.3.1",
 		"camelcase": "^8.0.0",
 		"commander": "^11.1.0"
 	}
