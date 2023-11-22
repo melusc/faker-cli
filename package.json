@@ -5,12 +5,12 @@
 	"packageManager": "yarn@4.0.2",
 	"devDependencies": {
 		"@lusc/tsconfig": "^4.0.0",
-		"@types/node": "^20.9.0",
-		"esbuild": "^0.19.5",
+		"@types/node": "^20.9.4",
+		"esbuild": "^0.19.7",
 		"prettier": "^3.1.0",
 		"rimraf": "^5.0.5",
-		"type-fest": "^4.7.1",
-		"typescript": "^5.2.2",
+		"type-fest": "^4.8.2",
+		"typescript": "^5.3.2",
 		"xo": "^0.56.0"
 	},
 	"scripts": {
