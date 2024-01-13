@@ -86,15 +86,16 @@ export class Flag<Type, Required extends boolean = false> {
 	}
 }
 
-type ExtractKeys<T> = T extends Flag<infer T>
-	? Flag<T>
-	: T extends BooleanFlag
-		? BooleanFlag
-		: T extends Record<string, infer R>
-			? ExtractKeys<R>
-			: T extends ReadonlyArray<infer R>
+type ExtractKeys<T> =
+	T extends Flag<infer T>
+		? Flag<T>
+		: T extends BooleanFlag
+			? BooleanFlag
+			: T extends Record<string, infer R>
 				? ExtractKeys<R>
-				: never;
+				: T extends ReadonlyArray<infer R>
+					? ExtractKeys<R>
+					: never;
 
 type SimpleTemplate =
 	| BooleanFlag
@@ -111,20 +112,18 @@ type Template =
 	| Readonly<Record<string, TemplateLevel1>>
 	| readonly TemplateLevel1[];
 
-type IsArrayOrRecord<T> = T extends Record<string, any>
-	? true
-	: T extends any[]
-		? true
-		: false;
-type ToArgRecursive<T> = T extends Flag<infer T>
-	? T
-	: T extends BooleanFlag
-		? boolean
-		: IsArrayOrRecord<T> extends true
-			? {
-					[K in keyof T]: ToArgRecursive<T[K]>;
-				}
-			: never;
+type IsArrayOrRecord<T> =
+	T extends Record<string, any> ? true : T extends any[] ? true : false;
+type ToArgRecursive<T> =
+	T extends Flag<infer T>
+		? T
+		: T extends BooleanFlag
+			? boolean
+			: IsArrayOrRecord<T> extends true
+				? {
+						[K in keyof T]: ToArgRecursive<T[K]>;
+					}
+				: never;
 
 type ToArguments<T extends readonly Template[]> = {
 	[key in keyof T]: ToArgRecursive<T[key]>;
