@@ -5,11 +5,11 @@
 	"packageManager": "yarn@4.0.2",
 	"devDependencies": {
 		"@lusc/tsconfig": "^4.0.0",
-		"@types/node": "^20.11.0",
-		"esbuild": "^0.19.11",
-		"prettier": "^3.2.1",
+		"@types/node": "^20.11.6",
+		"esbuild": "^0.19.12",
+		"prettier": "^3.2.4",
 		"rimraf": "^5.0.5",
-		"type-fest": "^4.9.0",
+		"type-fest": "^4.10.1",
 		"typescript": "^5.3.3",
 		"xo": "^0.56.0"
 	},
@@ -22,7 +22,7 @@
 		"fmt": "prettier --cache -w . && xo --fix"
 	},
 	"dependencies": {
-		"@faker-js/faker": "^8.3.1",
+		"@faker-js/faker": "^8.4.0",
 		"camelcase": "^8.0.0",
 		"commander": "^11.1.0"
 	}
