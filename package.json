@@ -5,13 +5,13 @@
 	"packageManager": "yarn@4.1.0",
 	"devDependencies": {
 		"@lusc/tsconfig": "^4.0.0",
-		"@types/node": "^20.11.16",
-		"esbuild": "^0.20.0",
+		"@types/node": "^20.11.24",
+		"esbuild": "^0.20.1",
 		"prettier": "^3.2.5",
 		"rimraf": "^5.0.5",
-		"type-fest": "^4.10.2",
+		"type-fest": "^4.10.3",
 		"typescript": "^5.3.3",
-		"xo": "^0.56.0"
+		"xo": "^0.57.0"
 	},
 	"scripts": {
 		"build:esbuild": "esbuild --packages=external --bundle --outfile=dist/cli.js --sourcemap --format=esm src/index.ts",
@@ -22,7 +22,7 @@
 		"fmt": "prettier --cache -w . && xo --fix"
 	},
 	"dependencies": {
-		"@faker-js/faker": "^8.4.0",
+		"@faker-js/faker": "^8.4.1",
 		"camelcase": "^8.0.0",
 		"commander": "^12.0.0"
 	}
