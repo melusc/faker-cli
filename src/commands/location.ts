@@ -99,12 +99,12 @@ template(
 		},
 	] as const,
 	{
-		pre(...args) {
-			const [{origin}] = args;
+		pre(...arguments_) {
+			const [{origin}] = arguments_;
 			if (origin === undefined || origin.every(t => t === undefined)) {
 				// @ts-expect-error It is readonly
 				options.origin = undefined;
-				return args;
+				return arguments_;
 			}
 
 			if (origin?.some(n => n === undefined)) {
@@ -115,7 +115,7 @@ template(
 				);
 			}
 
-			return args;
+			return arguments_;
 		},
 	},
 );
