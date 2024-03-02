@@ -114,22 +114,22 @@ type Template =
 
 type IsArrayOrRecord<T> =
 	T extends Record<string, any> ? true : T extends any[] ? true : false;
-type ToArgRecursive<T> =
+type ToArgumentRecursive<T> =
 	T extends Flag<infer T>
 		? T
 		: T extends BooleanFlag
 			? boolean
 			: IsArrayOrRecord<T> extends true
 				? {
-						[K in keyof T]: ToArgRecursive<T[K]>;
+						[K in keyof T]: ToArgumentRecursive<T[K]>;
 					}
 				: never;
 
 type ToArguments<T extends readonly Template[]> = {
-	[key in keyof T]: ToArgRecursive<T[key]>;
+	[key in keyof T]: ToArgumentRecursive<T[key]>;
 };
 
-type GenericFunction = (...args: unknown[]) => unknown;
+type GenericFunction = (...arguments_: unknown[]) => unknown;
 type FilterFunctions<T> = {
 	[K in keyof T]: T[K] extends GenericFunction ? T[K] : never;
 };
@@ -138,14 +138,15 @@ type TemplateFunction<Module extends keyof Faker> = <
 	// Combining the two to make TemplateActual typed seems a bit difficult
 	// I cannot get it to work
 	TemplateActual extends readonly Template[],
-	Fn extends keyof FilterFunctions<Faker[Module]> & string,
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	Function_ extends keyof FilterFunctions<Faker[Module]> & string,
 	Return,
 >(
-	name: Fn,
+	name: Function_,
 	template: TemplateActual,
 	options?: {
 		pre?: (
-			...args: ToArguments<TemplateActual>
+			...arguments_: ToArguments<TemplateActual>
 		) => ToArguments<TemplateActual> | undefined;
 		post?: (value: Return) => unknown;
 		alias?: readonly string[];
@@ -204,13 +205,13 @@ function fill<TemplateActual extends readonly Template[]>(
 	template: TemplateActual,
 	program: Command,
 ): ToArguments<TemplateActual> {
-	function recursiveFill<R extends Template>(item: R): ToArgRecursive<R> {
+	function recursiveFill<R extends Template>(item: R): ToArgumentRecursive<R> {
 		if (isSingleTemplate(item)) {
-			return item.get(program) as ToArgRecursive<R>;
+			return item.get(program) as ToArgumentRecursive<R>;
 		}
 
 		if (Array.isArray(item)) {
-			return item.map(item => recursiveFill(item)) as ToArgRecursive<R>;
+			return item.map(item => recursiveFill(item)) as ToArgumentRecursive<R>;
 		}
 
 		const result: Record<string, unknown> = {};
@@ -223,7 +224,7 @@ function fill<TemplateActual extends readonly Template[]>(
 			result[key] = recursiveFill(value);
 		}
 
-		return result as ToArgRecursive<R>;
+		return result as ToArgumentRecursive<R>;
 	}
 
 	return template.map(item =>
@@ -231,7 +232,8 @@ function fill<TemplateActual extends readonly Template[]>(
 	) as ToArguments<TemplateActual>;
 }
 
-const isReadonlyArray: (arg0: any) => arg0 is readonly any[] = Array.isArray;
+const isReadonlyArray: (argument0: any) => argument0 is readonly any[]
+	= Array.isArray;
 function commandFromName(
 	program: Command,
 	name: string,
@@ -306,15 +308,15 @@ export function createTemplate<Module extends keyof Faker>(
 
 			const faker = allFakers[locale];
 			const module = faker[moduleName];
-			const fn = module[name];
+			const function_ = module[name];
 
-			let args = fill(template, subSubProgram);
+			let arguments_ = fill(template, subSubProgram);
 
-			args = options?.pre?.(...args) ?? args;
+			arguments_ = options?.pre?.(...arguments_) ?? arguments_;
 
 			// @ts-expect-error It is not a function for some reason
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-			const result = fn(...args);
+			const result = function_(...arguments_);
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument
 			const final = options?.post?.(result) ?? result;
 			console.log(final);

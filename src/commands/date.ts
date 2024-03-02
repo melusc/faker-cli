@@ -8,14 +8,14 @@ import {
 
 const template = createTemplate('date');
 
-const refDateFlag = new Flag({
+const referenceDateFlag = new Flag({
 	flag: '--ref-date <date>',
 	transform: transformDate,
 });
 
 template('anytime', [
 	{
-		refDate: refDateFlag,
+		refDate: referenceDateFlag,
 	},
 ] as const);
 
@@ -67,7 +67,7 @@ template('birthdate', [
 			flag: '--mode <mode>',
 			transform: stringOf(new Set(['age', 'year'] as const)),
 		}),
-		refDate: refDateFlag,
+		refDate: referenceDateFlag,
 	},
 ] as const);
 
@@ -77,7 +77,7 @@ template('future', [
 			flag: '--years <years>',
 			transform: transformNumber,
 		}),
-		refDate: refDateFlag,
+		refDate: referenceDateFlag,
 	},
 ] as const);
 
@@ -98,7 +98,7 @@ template('past', [
 			flag: '--years <years>',
 			transform: transformNumber,
 		}),
-		refDate: refDateFlag,
+		refDate: referenceDateFlag,
 	},
 ] as const);
 
@@ -108,7 +108,7 @@ template('recent', [
 			flag: '--days <days>',
 			transform: transformNumber,
 		}),
-		refDate: refDateFlag,
+		refDate: referenceDateFlag,
 	},
 ] as const);
 
@@ -118,7 +118,7 @@ template('soon', [
 			flag: '--days <days>',
 			transform: transformNumber,
 		}),
-		refDate: refDateFlag,
+		refDate: referenceDateFlag,
 	},
 ] as const);
 

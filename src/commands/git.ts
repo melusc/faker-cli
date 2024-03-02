@@ -1,7 +1,7 @@
 import {BooleanFlag, Flag, createTemplate} from '../command-template.ts';
 import {stringOf, transformDate, transformInteger} from '../util.ts';
 
-const refDateFlag = new Flag({
+const referenceDateFlag = new Flag({
 	flag: '--ref-date <date>',
 	transform: transformDate,
 });
@@ -12,7 +12,7 @@ template('branch', [] as const);
 
 template('commitDate', [
 	{
-		refDate: refDateFlag,
+		refDate: referenceDateFlag,
 	},
 ] as const);
 
@@ -25,7 +25,7 @@ template('commitEntry', [
 		merge: new BooleanFlag({
 			flag: '--merge',
 		}),
-		refDate: refDateFlag,
+		refDate: referenceDateFlag,
 	},
 ] as const);
 
